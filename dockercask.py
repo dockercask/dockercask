@@ -6,6 +6,7 @@ import random
 import threading
 import json
 import time
+import traceback
 
 # sudo sh -c 'echo "load-module module-native-protocol-tcp" >> /etc/pulse/default.pa'
 # pulseaudio -k
@@ -283,15 +284,19 @@ def share_clipboard(app_num):
     clipboard = None
 
     while True:
-        for num in ('0', app_num):
-            val = get_clipboard(num)
-            i = 0 if num == '0' else 1
-            if val != clipboards[i] and val != clipboard:
-                clipboard = val
-                clipboards[i] = val
-                new_num = app_num if num == '0' else '0'
-                set_clipboard(new_num, val)
-        time.sleep(0.1)
+        try:
+            for num in ('0', app_num):
+                val = get_clipboard(num)
+                i = 0 if num == '0' else 1
+                if val != clipboards[i] and val != clipboard:
+                    clipboard = val
+                    clipboards[i] = val
+                    new_num = app_num if num == '0' else '0'
+                    set_clipboard(new_num, val)
+            time.sleep(0.1)
+        except:
+            traceback.print_stack()
+            time.sleep(0.5)
 
 
 command = sys.argv[1]

@@ -1,3 +1,10 @@
+## clipboard sharing
+
+When starting an app dockercask will watch the clipboads of the host and
+xephyr X11 screen using `xsel`. When one of the clipboards change the other
+clipboard will be updated. This update will also persist to any other running
+xephyr windows.
+
 ### archlinux install
 
 ```bash
@@ -49,6 +56,11 @@ python2 dockercask.py run firefox#2
 python2 dockercask.py add firefox#3
 python2 dockercask.py run firefox#3
 ```
+
+### chrome
+
+Chrome and Chromium do not run without `--no-sandbox` and it is very unstable
+with both intel and nvidia cards.
 
 ### keylogger test
 

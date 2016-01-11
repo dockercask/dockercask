@@ -31,11 +31,13 @@ python2 dockercask.py add spotify
 python2 dockercask.py build-all
 ```
 
-### run app
+### run firefox
 
 ```bash
 python2 dockercask.py run firefox
 ```
+
+![firefox](screenshots/firefox.png)
 
 ### run multiple instances
 

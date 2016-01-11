@@ -46,6 +46,7 @@ conf_data = {}
 with open(BASE_CONF_PATH, 'r') as conf_file:
     conf_data = json.loads(conf_file.read())
 
+SUDO_DOCKER = conf_data.get('sudo_docker', False)
 SHARE_CLIPBOARD = conf_data.get('share_clipboard', False)
 SHARE_FONTS = conf_data.get('share_fonts', False)
 SHARE_THEMES = conf_data.get('share_themes', False)
@@ -73,7 +74,7 @@ def build(app):
 
     app_dir = os.path.join(ROOT_DIR, 'apps', app)
 
-    subprocess.check_call([
+    subprocess.check_call(['sudo'] if SUDO_DOCKER else [] + [
         'docker',
         'build',
         '--rm',
@@ -215,7 +216,7 @@ def run(app):
     thread.daemon = True
     thread.start()
 
-    docker_proc = subprocess.Popen([
+    docker_proc = subprocess.Popen(['sudo'] if SUDO_DOCKER else [] + [
         'docker',
         'run',
         '--rm',

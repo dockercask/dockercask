@@ -121,6 +121,10 @@ def run(app):
     args = []
     volume_args = []
 
+    if not os.path.exists(app_dir):
+        print 'App must be added before running'
+        exit(1)
+
     if DEBUG:
         args.append('-it')
         cmd.append('/bin/bash')

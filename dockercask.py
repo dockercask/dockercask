@@ -75,6 +75,8 @@ def pull():
     ])
 
 def build(app):
+    app = app.split('#')[0]
+
     if app == 'base-intel' or app == 'base-nvidia':
         image_name = 'base-xorg'
     else:
@@ -109,7 +111,7 @@ def add(app):
 
     if not os.path.exists(app_conf_path):
         shutil.copyfile(
-            os.path.join(ROOT_DIR, 'apps', app, 'settings.json'),
+            os.path.join(ROOT_DIR, 'apps', app.split('#')[0], 'settings.json'),
             app_conf_path
         )
 
@@ -251,7 +253,7 @@ def run(app):
         '-e', 'XAUTHORITY=/tmp/.Xauth',
         '-e', 'XCOOKIE=' + x_cookie,
         '-e', 'PULSE_SERVER=' + PULSE_SERVER,
-        'dockercask/' + app,
+        'dockercask/' + app.split('#')[0],
     ] + cmd)
 
     if SHARE_CLIPBOARD:

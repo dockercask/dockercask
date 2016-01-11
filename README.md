@@ -43,10 +43,12 @@ python2 dockercask.py run firefox
 
 This will demonstrate an example X11 keylogger
 [github.com/magcius/keylog](https://github.com/magcius/keylog) that will only
-function within the xephyr window preventing logging of keyboard and mouse
+function within the xephyr window. Preventing logging of keyboard and mouse
 events outside of the xephyr window. Keylogger will only run inside of
 the docker container and will not have any effect on the host system. Click
 "Keylog" after starting to activate.
+
+![keylogger](screenshots/keylogger.png)
 
 ```bash
 python2 dockercask.py add keylogger

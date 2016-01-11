@@ -66,6 +66,13 @@ if GPU == 'auto':
 DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
 DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
 
+def pull():
+    subprocess.check_call((['sudo'] if SUDO_DOCKER else []) + [
+        'docker',
+        'pull',
+        'pritunl/archlinux',
+    ])
+
 def build(app):
     if app == 'base-intel' or app == 'base-nvidia':
         image_name = 'base-xorg'
@@ -290,6 +297,10 @@ if command == 'build':
     build(app)
 
 elif command == 'build-all':
+    build_all()
+
+elif command == 'update':
+    pull()
     build_all()
 
 elif command == 'add':

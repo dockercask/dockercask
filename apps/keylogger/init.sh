@@ -1,3 +1,4 @@
 #!/bin/sh
 appinit
-sudo -HEu docker /keylog-master/main
+cd /keylog-master
+sudo -HEu docker ./main

@@ -85,6 +85,14 @@ def build(app):
     if app == 'base':
         build('base-' + GPU)
 
+def build_all():
+    build('base')
+    for app in os.listdir(HOME_DIR):
+        if not os.path.isdir(os.path.join(HOME_DIR, app)) or \
+                app.startswith('.'):
+            continue
+        build(app)
+
 def add(app):
     app_dir = os.path.join(HOME_DIR, app)
     app_conf_path = os.path.join(CONF_DIR, app + '.json')
@@ -282,8 +290,7 @@ if command == 'build':
     build(app)
 
 elif command == 'build-all':
-    app = sys.argv[2]
-    build(app)
+    build_all()
 
 elif command == 'add':
     app = sys.argv[2]

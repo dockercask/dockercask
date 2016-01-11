@@ -39,6 +39,17 @@ python2 dockercask.py build spotify
 python2 dockercask.py run firefox
 ```
 
+### run multiple instances
+
+```bash
+python2 dockercask.py add firefox#1
+python2 dockercask.py run firefox#1
+python2 dockercask.py add firefox#2
+python2 dockercask.py run firefox#2
+python2 dockercask.py add firefox#3
+python2 dockercask.py run firefox#3
+```
+
 ### keylogger test
 
 This will demonstrate an example X11 keylogger

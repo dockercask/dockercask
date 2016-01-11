@@ -112,7 +112,7 @@ def add(app):
     if not os.path.exists(app_conf_path):
         shutil.copyfile(
             os.path.join(ROOT_DIR, 'apps', app.split('#')[0], 'settings.json'),
-            app_conf_path
+            app_conf_path,
         )
 
 def run(app):

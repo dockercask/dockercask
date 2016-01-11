@@ -1,0 +1,25 @@
+FROM pritunl/archlinux
+MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
+
+RUN pacman -S --noconfirm base-devel
+RUN pacman -S --noconfirm pulseaudio pulseaudio-alsa alsa-utils
+RUN pacman -S --noconfirm libx11 ttf-dejavu ttf-freefont ttf-ubuntu-font-family
+RUN pacman -S --noconfirm wget git unzip jq
+
+ADD aurget.sh /usr/local/bin/aurget
+RUN chmod +x /usr/local/bin/aurget
+
+ADD appinit.sh /usr/local/bin/appinit
+RUN chmod +x /usr/local/bin/appinit
+
+RUN useradd -m -g users -s /bin/bash docker
+RUN echo "cookie-file = /tmp/.pulse-cookie" >> /etc/pulse/client.conf
+
+RUN sudo -u docker mkdir -p /home/docker/.config/gtk-3.0
+RUN sudo -u docker mkdir -p /home/docker/.config/xfce4/xfconf/xfce-perchannel-xml
+ADD gtk2.conf /home/docker/.gtkrc-2.0
+ADD gtk3.conf /home/docker/.config/gtk-3.0/settings.ini
+ADD xfwm4.conf /home/docker/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml
+RUN chown docker:users /home/docker/.gtkrc-2.0
+RUN chown docker:users /home/docker/.config/gtk-3.0/settings.ini
+RUN chown docker:users /home/docker/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml

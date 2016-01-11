@@ -317,3 +317,7 @@ elif command == 'add':
 elif command == 'run':
     app = sys.argv[2]
     run(app)
+
+else:
+    app = sys.argv[1]
+    run(app)

@@ -15,6 +15,14 @@ sudo apt-get install xsel xserver-xephyr docker-engine linux-image-extra-virtual
 sudo service docker start
 ```
 
+### setup pulseaudio
+
+```bash
+sudo sh -c 'echo "load-module module-native-protocol-tcp" >> /etc/pulse/default.pa'
+pulseaudio -k
+pulseaudio --start
+```
+
 ### init
 
 ```bash

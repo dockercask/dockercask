@@ -19,5 +19,7 @@ RUN wget https://github.com/dockercask/packages/raw/master/freshplayerplugin-0.3
 RUN pacman -U --noconfirm /freshplayerplugin-0.3.4-1-x86_64.pkg.tar.xz
 RUN rm -f /freshplayerplugin-0.3.4-1-x86_64.pkg.tar.xz
 
+RUN sudo -u docker echo "enable_3d = 0" > /home/docker/.config/freshwrapper.conf
+
 ADD init.sh .
 CMD ["sh", "init.sh"]

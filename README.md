@@ -57,10 +57,10 @@ events outside of the xephyr window. Keylogger will only run inside of
 the docker container and will not have any effect on the host system. Click
 "Keylog" after starting to activate.
 
-![keylogger](screenshots/keylogger.png)
-
 ```bash
 python2 dockercask.py add keylogger
 python2 dockercask.py build keylogger
 python2 dockercask.py run keylogger
 ```
+
+![keylogger](screenshots/keylogger.png)

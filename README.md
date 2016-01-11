@@ -26,11 +26,9 @@ pulseaudio --start
 ### init
 
 ```bash
-python2 dockercask.py build base
 python2 dockercask.py add firefox
 python2 dockercask.py add spotify
-python2 dockercask.py build firefox
-python2 dockercask.py build spotify
+python2 dockercask.py build-all
 ```
 
 ### run app

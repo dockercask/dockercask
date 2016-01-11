@@ -8,10 +8,6 @@ import json
 import time
 import traceback
 
-# sudo sh -c 'echo "load-module module-native-protocol-tcp" >> /etc/pulse/default.pa'
-# pulseaudio -k
-# pulseaudio --start
-
 USER_HOME_DIR = '~'
 HOME_DIR = '~/Docker'
 PULSE_COOKIE_PATH = '~/.config/pulse/cookie'

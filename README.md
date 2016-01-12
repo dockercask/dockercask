@@ -71,6 +71,12 @@ xephyr X11 screen using `xsel`. When one of the clipboards change the other
 clipboard will be updated. This update will also persist to any other running
 xephyr windows.
 
+### slack
+
+For slack to close properly you will need to uncheck "Leave app running in
+notification area when the window is closed". Hardware acceleration should
+also be disabled.
+
 ### keylogger test
 
 This will demonstrate an example X11 keylogger

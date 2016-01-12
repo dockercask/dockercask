@@ -12,6 +12,9 @@ RUN chmod +x /usr/local/bin/aurget
 ADD appinit.sh /usr/local/bin/appinit
 RUN chmod +x /usr/local/bin/appinit
 
+ADD getsetting.sh /usr/local/bin/getsetting
+RUN chmod +x /usr/local/bin/getsetting
+
 RUN useradd -m -g users -s /bin/bash docker
 RUN echo "cookie-file = /tmp/.pulse-cookie" >> /etc/pulse/client.conf
 

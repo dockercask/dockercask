@@ -1,9 +1,6 @@
-## clipboard sharing
+# dockercask
 
-When starting an app dockercask will watch the clipboads of the host and
-xephyr X11 screen using `xsel`. When one of the clipboards change the other
-clipboard will be updated. This update will also persist to any other running
-xephyr windows.
+Simple python script to run desktop applications securely inside docker containers. Images are built using the [pritunl/archlinux](https://hub.docker.com/r/pritunl/archlinux/) base image. All containers are run without `--privileged` mode inside seperate [Xephyr](https://en.wikipedia.org/wiki/Xephyr) windows that are secured with a [X11 Cookie](https://en.wikipedia.org/wiki/X_Window_authorization). The clipboard is shared using `xsel` and PulseAudio is aviaible in the docker containers.
 
 ### archlinux install
 
@@ -35,6 +32,7 @@ pulseaudio --start
 ```bash
 python2 dockercask.py add firefox
 python2 dockercask.py add spotify
+python2 dockercask.py add thunderbird
 python2 dockercask.py build-all
 ```
 
@@ -59,15 +57,26 @@ python2 dockercask.py run firefox#3
 
 ### chrome
 
-Chrome and Chromium do not run without `--no-sandbox` and it is very unstable
+Chrome and Chromium do not run without `--no-sandbox` and are very unstable
 with both intel and nvidia cards.
+
+### xauthority
+
+The security of the host X11 screen is dependant on preventing the docker containers from accessing the xauthority file which is generally stored at `~/.Xauthority`. If you mount the home directory or otherwise provide access to this file the docker container could be able to access the host X11 screen.
+
+### clipboard sharing
+
+When starting an app dockercask will watch the clipboads of the host and
+xephyr X11 screen using `xsel`. When one of the clipboards change the other
+clipboard will be updated. This update will also persist to any other running
+xephyr windows.
 
 ### keylogger test
 
 This will demonstrate an example X11 keylogger
 [github.com/magcius/keylog](https://github.com/magcius/keylog) that will only
 function within the xephyr window. Preventing logging of keyboard and mouse
-events outside of the xephyr window. Keylogger will only run inside of
+events outside of the xephyr window. The keylogger will only run inside of
 the docker container and will not have any effect on the host system. Click
 "Keylog" after starting to activate.
 

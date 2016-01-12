@@ -55,7 +55,8 @@ DEBUG = conf_data.get('debug', False)
 GPU = conf_data.get('gpu', 'auto')
 if GPU == 'auto':
     try:
-        subprocess.check_output(['which', 'nvidia-settings'])
+        subprocess.check_output(['which', 'nvidia-settings'],
+            stderr=subprocess.PIPE)
         GPU = 'nvidia'
     except:
         GPU = 'intel'

@@ -223,6 +223,7 @@ def run(app):
         '-title', app,
         '-br',
         '-resizeable',
+        '-no-host-grab',
         '-nolisten', 'tcp',
         ':' + x_num,
     ])

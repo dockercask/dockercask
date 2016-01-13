@@ -43,14 +43,14 @@ conf_data = {}
 with open(BASE_CONF_PATH, 'r') as conf_file:
     conf_data = json.loads(conf_file.read())
 
-SUDO_DOCKER = conf_data.get('sudo_docker', False)
-SHARE_CLIPBOARD = conf_data.get('share_clipboard', False)
-SHARE_FONTS = conf_data.get('share_fonts', False)
+SUDO_DOCKER = conf_data.get('sudo_docker', True)
+INCREASE_SHM = conf_data.get('increase_shm', True)
+SHARE_CLIPBOARD = conf_data.get('share_clipboard', True)
+SHARE_FONTS = conf_data.get('share_fonts', True)
 SHARE_THEMES = conf_data.get('share_themes', False)
 SHARE_ICONS = conf_data.get('share_icons', False)
-SHARE_USER_FONTS = conf_data.get('share_user_fonfs', False)
-SHARE_USER_THEMES = conf_data.get('share_user_themes', False)
-INCREASE_SHM = conf_data.get('increase_shm', False)
+SHARE_USER_FONTS = conf_data.get('share_user_fonfs', True)
+SHARE_USER_THEMES = conf_data.get('share_user_themes', True)
 DEBUG = conf_data.get('debug', False)
 
 GPU = conf_data.get('gpu', 'auto')

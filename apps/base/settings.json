@@ -1,5 +1,6 @@
 {
     "gpu": "auto",
+    "host_ipc": false,
     "sudo_docker": true,
     "share_clipboard": true,
     "share_fonts": true,

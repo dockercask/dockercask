@@ -50,6 +50,7 @@ SHARE_THEMES = conf_data.get('share_themes', False)
 SHARE_ICONS = conf_data.get('share_icons', False)
 SHARE_USER_FONTS = conf_data.get('share_user_fonfs', False)
 SHARE_USER_THEMES = conf_data.get('share_user_themes', False)
+INCREASE_SHM = conf_data.get('increase_shm', False)
 DEBUG = conf_data.get('debug', False)
 
 GPU = conf_data.get('gpu', 'auto')
@@ -133,8 +134,8 @@ def run(app):
         args.append('-it')
         cmd.append('/bin/bash')
 
-    if app_conf_data.get('host_ipc'):
-        args += ['--ipc', 'host']
+    if app_conf_data.get('increase_shm', INCREASE_SHM):
+        args += ['--shm-size', '2g']
 
     downloads_dir = os.path.join(USER_HOME_DIR, 'Downloads')
 

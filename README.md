@@ -88,10 +88,11 @@ host system should be more secure.
 Docker releases before v1.10.0 have a hard coded `/dev/shm` size of 64m. This
 is too small for Chromium's IPC and also Firefox's Electrolysis which uses the
 same IPC code from Chromium. With this size the browser will frequently crash
-when the `/dev/shm` is full. The `--shm-size` option was added in v1.10.0 and
-will be used when running apps that need a larger `/dev/shm`. Docker v1.10.0
-will be needed when running these apps. ArchLinux users can use the `PKGBUILD`
-in [github.com/dockercask/docker-dev](https://github.com/dockercask/docker-dev)
+when the `/dev/shm` is full. Other apps will also have rendering issues without
+increasing the `/dev/shm` size. The `--shm-size` option was added in v1.10.0
+and will be used when available. Docker v1.10.0 will be needed when
+running these apps. ArchLinux users can use the `PKGBUILD` in
+[github.com/dockercask/docker-dev](https://github.com/dockercask/docker-dev)
 to install v1.10.0.
 
 ### lastpass

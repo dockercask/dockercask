@@ -79,9 +79,9 @@ Xephyr windows.
 ### chrome
 
 Chrome and Chromium do not run in a Docker container without `--no-sandbox` to
-disable Chromium's sandbox. This will show a warning when starting Chromium.
-The Docker container with Xephyr already providies sufficient sandboxing and
-overall the host system should be more secure.
+disable Chromium's sandbox. This will show a warning when starting. The Docker
+container with Xephyr already providies sufficient sandboxing and overall the
+host system should be more secure.
 
 ### shared memory
 

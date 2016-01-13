@@ -126,6 +126,10 @@ def run(app):
     with open(app_conf_path, 'r') as app_conf_file:
         app_conf_data = json.loads(app_conf_file.read())
 
+    host_x11 = app_conf_data.get('host_x11')
+    privileged = app_conf_data.get('privileged')
+    increase_shm = app_conf_data.get('increase_shm', INCREASE_SHM)
+
     if not os.path.exists(app_dir):
         print 'App must be added before running'
         exit(1)
@@ -134,7 +138,10 @@ def run(app):
         docker_args.append('-it')
         cmd.append('/bin/bash')
 
-    if app_conf_data.get('increase_shm', INCREASE_SHM):
+    if privileged:
+        docker_args += ['--privileged']
+
+    if increase_shm:
         docker_args += ['--shm-size', '1g']
 
     downloads_dir = os.path.join(USER_HOME_DIR, 'Downloads')
@@ -172,30 +179,35 @@ def run(app):
     mkdirs(fonts_dir)
     mkdirs(themes_dir)
 
-    x_cookie = subprocess.check_output(['mcookie'])
-    x_num = str(random.randint(1000, 32000))
-    x_auth_path = os.path.join(TMP_DIR, '.X11-docker-' + x_num)
+    if host_x11:
+        x_cookie = subprocess.check_output(['xauth', 'list', ':0']).split()[-1]
+        x_num = '0'
+    else:
+        x_cookie = subprocess.check_output(['mcookie'])
+        x_num = str(random.randint(1000, 32000))
+        x_auth_path = os.path.join(TMP_DIR, '.X11-docker-' + x_num)
+
+        with open(x_auth_path, 'w') as _:
+            pass
+
+        subprocess.check_call([
+            'xauth',
+            '-f', x_auth_path,
+            'add',
+            ':' + x_num,
+            'MIT-MAGIC-COOKIE-1',
+            x_cookie,
+        ])
+
+        subprocess.check_call([
+            'xauth',
+            'add',
+            ':' + x_num,
+            'MIT-MAGIC-COOKIE-1',
+            x_cookie,
+        ])
+
     x_screen_path = os.path.join(TMP_DIR, '.X11-unix', 'X' + x_num)
-
-    with open(x_auth_path, 'w') as _:
-        pass
-
-    subprocess.check_call([
-        'xauth',
-        '-f', x_auth_path,
-        'add',
-        ':' + x_num,
-        'MIT-MAGIC-COOKIE-1',
-        x_cookie,
-    ])
-
-    subprocess.check_call([
-        'xauth',
-        'add',
-        ':' + x_num,
-        'MIT-MAGIC-COOKIE-1',
-        x_cookie,
-    ])
 
     x_proc = None
     docker_proc = None
@@ -211,38 +223,41 @@ def run(app):
                 x_proc.kill()
         except:
             pass
-        try:
-            os.remove(x_auth_path)
-        except:
-            pass
-        try:
-            subprocess.check_output([
-                'xauth',
-                'remove',
-                ':' + x_num,
-            ])
-        except:
-            pass
+        if not host_x11:
+            try:
+                os.remove(x_auth_path)
+            except:
+                pass
+            try:
+                subprocess.check_output([
+                    'xauth',
+                    'remove',
+                    ':' + x_num,
+                ])
+            except:
+                pass
 
-    x_proc = subprocess.Popen([
-        'Xephyr',
-        '-auth', x_auth_path,
-        '-screen', DEFAULT_WIN_SIZE,
-        '-title', app,
-        '-br',
-        '-resizeable',
-        '-no-host-grab',
-        '-nolisten', 'tcp',
-        ':' + x_num,
-    ])
+    if not host_x11:
+        x_proc = subprocess.Popen([
+            'Xephyr',
+            '-auth', x_auth_path,
+            '-screen', DEFAULT_WIN_SIZE,
+            '-title', app,
+            '-dpi', '95',
+            '-br',
+            '-resizeable',
+            '-no-host-grab',
+            '-nolisten', 'tcp',
+            ':' + x_num,
+        ])
 
-    def thread_func():
-        x_proc.wait()
-        clean_up()
+        def thread_func():
+            x_proc.wait()
+            clean_up()
 
-    thread = threading.Thread(target=thread_func)
-    thread.daemon = True
-    thread.start()
+        thread = threading.Thread(target=thread_func)
+        thread.daemon = True
+        thread.start()
 
     args = (['sudo'] if SUDO_DOCKER else []) + [
         'docker',
@@ -266,7 +281,7 @@ def run(app):
 
     docker_proc = subprocess.Popen(args)
 
-    if SHARE_CLIPBOARD:
+    if not host_x11 and SHARE_CLIPBOARD:
         thread = threading.Thread(target=share_clipboard, args=(x_num,))
         thread.daemon = True
         thread.start()

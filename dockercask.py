@@ -119,7 +119,7 @@ def run(app):
     fonts_dir = os.path.join(USER_HOME_DIR, '.fonts')
     themes_dir = os.path.join(USER_HOME_DIR, '.themes')
     cmd = []
-    args = []
+    docker_args = []
     volume_args = []
 
     app_conf_data = {}
@@ -131,11 +131,11 @@ def run(app):
         exit(1)
 
     if DEBUG:
-        args.append('-it')
+        docker_args.append('-it')
         cmd.append('/bin/bash')
 
     if app_conf_data.get('increase_shm', INCREASE_SHM):
-        args += ['--shm-size', '1g']
+        docker_args += ['--shm-size', '1g']
 
     downloads_dir = os.path.join(USER_HOME_DIR, 'Downloads')
 
@@ -244,11 +244,11 @@ def run(app):
     thread.daemon = True
     thread.start()
 
-    docker_proc = subprocess.Popen((['sudo'] if SUDO_DOCKER else []) + [
+    args = (['sudo'] if SUDO_DOCKER else []) + [
         'docker',
         'run',
         '--rm',
-    ] + args + [
+    ] + docker_args + [
         '-v', '%s:%s' % (x_screen_path, x_screen_path),
         '-v', '%s:%s' % (PULSE_COOKIE_PATH, '/tmp/.pulse-cookie'),
         '-v', '%s:%s' % (BASE_CONF_PATH, '/base.json:ro'),
@@ -260,7 +260,11 @@ def run(app):
         '-e', 'XCOOKIE=' + x_cookie,
         '-e', 'PULSE_SERVER=' + PULSE_SERVER,
         'dockercask/' + app.split('#')[0],
-    ] + cmd)
+    ] + cmd
+
+    print ' '.join(args)
+
+    docker_proc = subprocess.Popen(args)
 
     if SHARE_CLIPBOARD:
         thread = threading.Thread(target=share_clipboard, args=(x_num,))

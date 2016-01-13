@@ -55,11 +55,6 @@ python2 dockercask.py add firefox#3
 python2 dockercask.py run firefox#3
 ```
 
-### chrome
-
-Chrome and Chromium do not run without `--no-sandbox` and are very unstable
-with both intel and nvidia cards.
-
 ### xauthority
 
 The security of the host X11 screen is dependant on preventing the docker containers from accessing the xauthority file which is generally stored at `~/.Xauthority`. If you mount the home directory or otherwise provide access to this file the docker container could be able to access the host X11 screen.
@@ -70,6 +65,11 @@ When starting an app dockercask will watch the clipboads of the host and
 xephyr X11 screen using `xsel`. When one of the clipboards change the other
 clipboard will be updated. This update will also persist to any other running
 xephyr windows.
+
+### chrome
+
+Chrome and Chromium do not run without `--no-sandbox` and are very unstable
+with both intel and nvidia cards.
 
 ### slack
 

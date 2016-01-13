@@ -121,6 +121,10 @@ def run(app):
     args = []
     volume_args = []
 
+    app_conf_data = {}
+    with open(app_conf_path, 'r') as app_conf_file:
+        app_conf_data = json.loads(app_conf_file.read())
+
     if not os.path.exists(app_dir):
         print 'App must be added before running'
         exit(1)
@@ -128,6 +132,9 @@ def run(app):
     if DEBUG:
         args.append('-it')
         cmd.append('/bin/bash')
+
+    if app_conf_data.get('host_ipc'):
+        args += ['--ipc', 'host']
 
     downloads_dir = os.path.join(USER_HOME_DIR, 'Downloads')
 

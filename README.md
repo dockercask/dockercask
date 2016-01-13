@@ -1,6 +1,13 @@
 # dockercask
 
-Simple python script to run desktop applications securely inside docker containers. Images are built using the [pritunl/archlinux](https://hub.docker.com/r/pritunl/archlinux/) base image. All containers are run without `--privileged` mode inside seperate [Xephyr](https://en.wikipedia.org/wiki/Xephyr) windows that are secured with a [X11 Cookie](https://en.wikipedia.org/wiki/X_Window_authorization). The clipboard is shared using `xsel` and PulseAudio is aviaible in the docker containers.
+Simple python script to run desktop applications securely inside docker
+containers. Images are built using the
+[pritunl/archlinux](https://hub.docker.com/r/pritunl/archlinux/) base image.
+All containers are run without `--privileged` mode inside seperate
+[Xephyr](https://en.wikipedia.org/wiki/Xephyr) windows that are secured with a
+[X11 Cookie](https://en.wikipedia.org/wiki/X_Window_authorization). The
+clipboard is shared using `xsel` and PulseAudio is aviaible in the docker
+containers.
 
 ### archlinux install
 
@@ -57,7 +64,10 @@ python2 dockercask.py run firefox#3
 
 ### xauthority
 
-The security of the host X11 screen is dependant on preventing the docker containers from accessing the xauthority file which is generally stored at `~/.Xauthority`. If you mount the home directory or otherwise provide access to this file the docker container could be able to access the host X11 screen.
+The security of the host X11 screen is dependent on preventing the docker
+containers from accessing the xauthority file which is generally stored at
+`~/.Xauthority`. If you mount the home directory or otherwise provide access
+to this file the docker container could be able to access the host X11 screen.
 
 ### clipboard sharing
 
@@ -70,6 +80,13 @@ xephyr windows.
 
 Chrome and Chromium do not run without `--no-sandbox` and are very unstable
 with both intel and nvidia cards.
+
+### lastpass
+
+Password managers such as LastPass should not be run in the same container as
+the web browser. If the web browser is compromised the password manager could
+also be compromised. This can be avoided by running a separate browser for a
+password manager or using the LastPass desktop app.
 
 ### slack
 

@@ -135,7 +135,7 @@ def run(app):
         cmd.append('/bin/bash')
 
     if app_conf_data.get('increase_shm', INCREASE_SHM):
-        args += ['--shm-size', '2g']
+        args += ['--shm-size', '1g']
 
     downloads_dir = os.path.join(USER_HOME_DIR, 'Downloads')
 

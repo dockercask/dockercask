@@ -78,8 +78,14 @@ xephyr windows.
 
 ### chrome
 
-Chrome and Chromium do not run without `--no-sandbox` and are very unstable
-with both intel and nvidia cards.
+Chrome and Chromium do not run without `--no-sandbox` to disable Chrome's
+sandbox. There is also an issue with unix domain sockets that breaks Chrome's
+IPC. This is fixed by using `--ipc=host` which will give the docker container
+access to the hosts IPC. This same issue is also present in Firefox's
+multi process system that is in beta now which uses the IPC code from Chromium.
+Using `--ipc=host` to disable the containers IPC namespace will make the host
+more vulnerable. The current version of Firefox can be run with an IPC
+namespace.
 
 ### lastpass
 

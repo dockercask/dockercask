@@ -286,21 +286,20 @@ def share_clipboard(app_num):
     time.sleep(1)
 
     val = get_clipboard('0')
-    set_clipboard(app_num,val )
+    set_clipboard(app_num, val)
     clipboards = [val, get_clipboard(app_num)]
-    clipboard = None
 
     while True:
         try:
             for num in ('0', app_num):
                 val = get_clipboard(num)
                 i = 0 if num == '0' else 1
-                if val != clipboards[i] and val != clipboard:
-                    clipboard = val
-                    clipboards[i] = val
+                if val != clipboards[i]:
+                    clipboards[0] = val
+                    clipboards[1] = val
                     new_num = app_num if num == '0' else '0'
                     set_clipboard(new_num, val)
-            time.sleep(0.1)
+            time.sleep(0.2)
         except:
             traceback.print_stack()
             time.sleep(5)

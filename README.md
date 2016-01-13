@@ -72,9 +72,9 @@ to this file the docker container could be able to access the host X11 screen.
 ### clipboard sharing
 
 When starting an app dockercask will watch the clipboads of the host and
-xephyr X11 screen using `xsel`. When one of the clipboards change the other
+Xephyr X11 screen using `xsel`. When one of the clipboards change the other
 clipboard will be updated. This update will also persist to any other running
-xephyr windows.
+Xephyr windows.
 
 ### chrome
 
@@ -111,8 +111,8 @@ also be disabled.
 
 This will demonstrate an example X11 keylogger
 [github.com/magcius/keylog](https://github.com/magcius/keylog) that will only
-function within the xephyr window. Preventing logging of keyboard and mouse
-events outside of the xephyr window. The keylogger will only run inside of
+function within the Xephyr window. Preventing logging of keyboard and mouse
+events outside of the Xephyr window. The keylogger will only run inside of
 the docker container and will not have any effect on the host system. Click
 "Keylog" after starting to activate.
 

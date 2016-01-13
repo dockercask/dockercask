@@ -78,14 +78,21 @@ xephyr windows.
 
 ### chrome
 
-Chrome and Chromium do not run without `--no-sandbox` to disable Chrome's
-sandbox. There is also an issue with unix domain sockets that breaks Chrome's
-IPC. This is fixed by using `--ipc=host` which will give the docker container
-access to the hosts IPC. This same issue is also present in Firefox's
-multi process system that is in beta now which uses the IPC code from Chromium.
-Using `--ipc=host` to disable the containers IPC namespace will make the host
-more vulnerable. The current version of Firefox can be run with an IPC
-namespace.
+Chrome and Chromium do not run in a Docker container without `--no-sandbox` to
+disable Chromium's sandbox. This will show a warning when starting Chromium.
+The Docker container with Xephyr already providies sufficient sandboxing and
+overall the host system should be more secure.
+
+### shared memory
+
+Docker releases before v1.10.0 have a hard coded `/dev/shm` size of 64m. This
+is too small for Chromium's IPC and also Firefox's Electrolysis which uses the
+same IPC code from Chromium. With this size the browser will frequently crash
+when the `/dev/shm` is full. The `--shm-size` option was added in v1.10.0 and
+will be used when running apps that need a larger `/dev/shm`. Docker v1.10.0
+will be needed when running these apps. ArchLinux users can use the `PKGBUILD`
+in [github.com/dockercask/docker-dev](https://github.com/dockercask/docker-dev)
+to install v1.10.0.
 
 ### lastpass
 

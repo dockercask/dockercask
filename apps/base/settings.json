@@ -8,7 +8,6 @@
     "share_icons": false,
     "share_user_fonfs": true,
     "share_user_themes": true,
-    "debug": false,
     "xfwm4_theme": "Numix",
     "xfwm4_font": "Verdana Bold 11",
     "gtk2_theme": "Ambiance",

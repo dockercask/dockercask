@@ -65,6 +65,7 @@ SHARE_THEMES = conf_data.get('share_themes', False)
 SHARE_ICONS = conf_data.get('share_icons', False)
 SHARE_USER_FONTS = conf_data.get('share_user_fonfs', True)
 SHARE_USER_THEMES = conf_data.get('share_user_themes', True)
+DPI = conf_data.get('dpi')
 DEBUG = False
 
 GPU = conf_data.get('gpu', 'auto')
@@ -162,6 +163,7 @@ def run(app):
     host_x11 = app_conf_data.get('host_x11')
     privileged = app_conf_data.get('privileged')
     increase_shm = app_conf_data.get('increase_shm', INCREASE_SHM)
+    dpi = app_conf_data.get('dpi', DPI)
 
     if not os.path.exists(app_dir):
         print 'App must be added before running'
@@ -271,18 +273,21 @@ def run(app):
                 pass
 
     if not host_x11:
-        x_proc = subprocess.Popen([
+        args = [
             'Xephyr',
             '-auth', x_auth_path,
             '-screen', DEFAULT_WIN_SIZE,
             '-title', app,
-            '-dpi', '95',
             '-br',
             '-resizeable',
             '-no-host-grab',
             '-nolisten', 'tcp',
-            ':' + x_num,
-        ])
+        ]
+
+        if dpi:
+            args += ['-dpi', dpi]
+
+        x_proc = subprocess.Popen(args + [':' + x_num])
 
         def thread_func():
             x_proc.wait()

@@ -10,16 +10,30 @@ import traceback
 
 USER_HOME_DIR = '~'
 HOME_DIR = '~/Docker'
+APP_DIR = '~/.local/share/applications'
 PULSE_COOKIE_PATH = '~/.config/pulse/cookie'
 TMP_DIR = '/tmp'
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+SCRIPT_PATH = os.path.join(ROOT_DIR, __file__)
 PULSE_SERVER = 'tcp:172.17.0.1:4713'
 
 
 
 # Init
+DESKTOP_ENTRY = '''
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Name=Docker - %s
+Comment=Docker - %s
+Exec=%s
+Icon=%s
+Categories=Other;
+'''
 USER_HOME_DIR = os.path.expanduser(USER_HOME_DIR)
 HOME_DIR = os.path.expanduser(HOME_DIR)
+DESKTOP_DIR = os.path.expanduser(APP_DIR)
 PULSE_COOKIE_PATH = os.path.expanduser(PULSE_COOKIE_PATH)
 TMP_DIR = os.path.expanduser(TMP_DIR)
 CONF_DIR = os.path.join(HOME_DIR, '.config')
@@ -103,6 +117,7 @@ def build_all():
 
 def add(app):
     app_dir = os.path.join(HOME_DIR, app)
+    icon_path = os.path.join(ROOT_DIR, 'apps', app.split('#')[0], 'icon.png')
     app_conf_path = os.path.join(CONF_DIR, app + '.json')
 
     mkdirs(app_dir)
@@ -112,6 +127,24 @@ def add(app):
             os.path.join(ROOT_DIR, 'apps', app.split('#')[0], 'settings.json'),
             app_conf_path,
         )
+
+    if DEBUG:
+        cmd = 'xfce4-terminal --command="python2 %s %s --debug"' % (
+            SCRIPT_PATH, app)
+    else:
+        cmd = 'python2 %s %s' % (SCRIPT_PATH, app)
+
+    formated_app_name = app.replace('#', ' ').replace('-', ' ').split()
+    formated_app_name = ' '.join([x.capitalize() for x in formated_app_name])
+
+    with open(os.path.join(DESKTOP_DIR,
+            'docker-%s.desktop' % app.replace('#', '-')), 'w') as desktop_file:
+        desktop_file.write(DESKTOP_ENTRY % (
+            formated_app_name,
+            formated_app_name,
+            cmd,
+            icon_path,
+        ))
 
 def run(app):
     app_dir = os.path.join(HOME_DIR, app)
@@ -326,6 +359,8 @@ def share_clipboard(app_num):
 
 
 command = sys.argv[1]
+if sys.argv[-1] == '--debug':
+    DEBUG = True
 
 if command == 'build':
     app = sys.argv[2]

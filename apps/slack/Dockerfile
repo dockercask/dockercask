@@ -1,6 +1,8 @@
 FROM dockercask/base-xorg
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
+RUN pacman -S --noconfirm nss
+
 RUN aurget slack-desktop
 RUN pacman -U --noconfirm /aur/slack-desktop*.pkg.tar.xz
 RUN rm -rf /aur

@@ -65,7 +65,7 @@ SHARE_THEMES = conf_data.get('share_themes', False)
 SHARE_ICONS = conf_data.get('share_icons', False)
 SHARE_USER_FONTS = conf_data.get('share_user_fonfs', True)
 SHARE_USER_THEMES = conf_data.get('share_user_themes', True)
-DEBUG = conf_data.get('debug', False)
+DEBUG = False
 
 GPU = conf_data.get('gpu', 'auto')
 if GPU == 'auto':

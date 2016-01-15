@@ -22,3 +22,4 @@ sudo -HEu docker touch /tmp/.Xauth
 sudo -HEu docker xauth -f /tmp/.Xauth add $DISPLAY MIT-MAGIC-COOKIE-1 $XCOOKIE
 
 sudo -HEu docker startxfce4&
+sleep 0.25

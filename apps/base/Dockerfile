@@ -12,7 +12,7 @@ RUN chmod +x /usr/local/bin/aurget
 ADD appinit.sh /usr/local/bin/appinit
 RUN chmod +x /usr/local/bin/appinit
 
-ADD appinit.sh /usr/local/bin/appinitpanel
+ADD appinitpanel.sh /usr/local/bin/appinitpanel
 RUN chmod +x /usr/local/bin/appinitpanel
 
 ADD getsetting.sh /usr/local/bin/getsetting

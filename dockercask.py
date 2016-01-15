@@ -7,6 +7,7 @@ import threading
 import json
 import time
 import traceback
+import signal
 
 USER_HOME_DIR = '~'
 HOME_DIR = '~/Docker'
@@ -79,6 +80,33 @@ if GPU == 'auto':
 
 DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
 DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
+
+def kill_process(process):
+    for _ in xrange(100):
+        try:
+            process.send_signal(signal.SIGINT)
+        except OSError as error:
+            if error.errno != 3:
+                raise
+        for _ in xrange(4):
+            if process.poll() is not None:
+                terminated = True
+                break
+            time.sleep(0.0025)
+        if terminated:
+            break
+
+    if not terminated:
+        for _ in xrange(10):
+            if process.poll() is not None:
+                terminated = True
+                break
+            try:
+                process.send_signal(signal.SIGKILL)
+            except OSError as error:
+                if error.errno != 3:
+                    raise
+            time.sleep(0.01)
 
 def pull():
     subprocess.check_call((['sudo'] if SUDO_DOCKER else []) + [
@@ -261,12 +289,12 @@ def run(app):
     def clean_up():
         try:
             if docker_proc:
-                docker_proc.kill()
+                kill_process(docker_proc)
         except:
             pass
         try:
             if x_proc:
-                x_proc.kill()
+                kill_process(x_proc)
         except:
             pass
         if not host_x11:
@@ -335,8 +363,10 @@ def run(app):
         thread.daemon = True
         thread.start()
 
-    docker_proc.wait()
-    clean_up()
+    try:
+        docker_proc.wait()
+    finally:
+        clean_up()
 
 def set_clipboard(num, val):
     proc = subprocess.Popen(

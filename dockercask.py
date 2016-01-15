@@ -39,6 +39,7 @@ PULSE_COOKIE_PATH = os.path.expanduser(PULSE_COOKIE_PATH)
 TMP_DIR = os.path.expanduser(TMP_DIR)
 CONF_DIR = os.path.join(HOME_DIR, '.config')
 BASE_CONF_PATH = os.path.join(CONF_DIR, 'base.json')
+interrupt = False
 
 
 
@@ -82,7 +83,9 @@ DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
 DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
 
 def kill_process(process):
-    for _ in xrange(100):
+    terminated = False
+
+    for _ in xrange(200):
         try:
             process.send_signal(signal.SIGINT)
         except OSError as error:
@@ -178,9 +181,9 @@ def add(app):
 def run(app):
     try:
         subprocess.check_call([
-            "wmctrl",
-            "-F",
-            "-a",
+            'wmctrl',
+            '-F',
+            '-a',
             app,
         ])
         return
@@ -287,16 +290,12 @@ def run(app):
     docker_proc = None
 
     def clean_up():
-        try:
-            if docker_proc:
-                kill_process(docker_proc)
-        except:
-            pass
-        try:
-            if x_proc:
-                kill_process(x_proc)
-        except:
-            pass
+        global interrupt
+        interrupt = True
+        if docker_proc:
+            kill_process(docker_proc)
+        if x_proc:
+            kill_process(x_proc)
         if not host_x11:
             try:
                 os.remove(x_auth_path)
@@ -307,7 +306,7 @@ def run(app):
                     'xauth',
                     'remove',
                     ':' + x_num,
-                ])
+                ], stderr=subprocess.PIPE)
             except:
                 pass
 
@@ -329,11 +328,12 @@ def run(app):
         x_proc = subprocess.Popen(args + [':' + x_num])
 
         def thread_func():
-            x_proc.wait()
-            clean_up()
+            try:
+                x_proc.wait()
+            finally:
+                clean_up()
 
         thread = threading.Thread(target=thread_func)
-        thread.daemon = True
         thread.start()
 
     args = (['sudo'] if SUDO_DOCKER else []) + [
@@ -388,7 +388,7 @@ def share_clipboard(app_num):
     set_clipboard(app_num, val)
     clipboards = [val, get_clipboard(app_num)]
 
-    while True:
+    while not interrupt:
         try:
             for num in ('0', app_num):
                 val = get_clipboard(num)
@@ -400,8 +400,9 @@ def share_clipboard(app_num):
                     set_clipboard(new_num, val)
             time.sleep(0.2)
         except:
-            traceback.print_stack()
-            time.sleep(5)
+            if not interrupt:
+                traceback.print_stack()
+                time.sleep(5)
 
 
 command = sys.argv[1]

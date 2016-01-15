@@ -28,8 +28,11 @@ sudo service docker start
 
 ### setup pulseaudio
 
+PulseAudio will not work when shared memory is used. The commands below will
+disable shared memory and then restart the PulseAudio server.
+
 ```bash
-sudo sh -c 'echo "load-module module-native-protocol-tcp" >> /etc/pulse/default.pa'
+sudo sh -c 'echo "enable-shm = no" >> /etc/pulse/daemon.conf'
 pulseaudio -k
 pulseaudio --start
 ```

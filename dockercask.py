@@ -148,6 +148,17 @@ def add(app):
         ))
 
 def run(app):
+    try:
+        subprocess.check_call([
+            "wmctrl",
+            "-F",
+            "-a",
+            app,
+        ])
+        return
+    except subprocess.CalledProcessError:
+        pass
+
     app_dir = os.path.join(HOME_DIR, app)
     app_conf_path = os.path.join(CONF_DIR, app + '.json')
     fonts_dir = os.path.join(USER_HOME_DIR, '.fonts')

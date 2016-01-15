@@ -1,4 +1,4 @@
 #!/bin/bash
-appinit
+appinitpanel
 cd /keylog-master
 sudo -HEu docker ./main

@@ -177,7 +177,7 @@ def run(app):
         docker_args += ['--privileged']
 
     if increase_shm:
-        docker_args += ['--shm-size', '2g']
+        docker_args += ['--shm-size', '1g']
 
     downloads_dir = os.path.join(USER_HOME_DIR, 'Downloads')
 

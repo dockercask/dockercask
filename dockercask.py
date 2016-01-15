@@ -16,7 +16,7 @@ PULSE_COOKIE_PATH = '~/.config/pulse/cookie'
 TMP_DIR = '/tmp'
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 SCRIPT_PATH = os.path.join(ROOT_DIR, __file__)
-PULSE_SERVER = 'tcp:172.17.0.1:4713'
+PULSE_SERVER = 'unix:/var/run/pulse/native'
 
 
 
@@ -355,6 +355,8 @@ def run(app):
         '-v', '%s:%s' % (BASE_CONF_PATH, '/base.json:ro'),
         '-v', '%s:%s' % (app_conf_path, '/app.json:ro'),
         '-v', '%s:%s' % (app_dir, '/home/docker/Docker'),
+        '-v', '/var/run/user/%s/pulse/native:/var/run/pulse/native' % (
+            os.getuid()),
     ] + volume_args + [
         '-e', 'DISPLAY=:' + x_num,
         '-e', 'XAUTHORITY=/tmp/.Xauth',

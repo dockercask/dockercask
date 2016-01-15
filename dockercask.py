@@ -287,13 +287,22 @@ def run(app):
     x_screen_path = os.path.join(TMP_DIR, '.X11-unix', 'X' + x_num)
 
     x_proc = None
-    docker_proc = None
+    docker_id = None
 
     def clean_up():
         global interrupt
         interrupt = True
-        if docker_proc:
-            kill_process(docker_proc)
+
+        if docker_id:
+            try:
+                subprocess.check_output([
+                    'docker',
+                    'rm',
+                    '-f',
+                    docker_id,
+                ], stderr=subprocess.PIPE)
+            except:
+                pass
         if x_proc:
             kill_process(x_proc)
         if not host_x11:
@@ -339,7 +348,7 @@ def run(app):
     args = (['sudo'] if SUDO_DOCKER else []) + [
         'docker',
         'run',
-        '--rm',
+        '--rm' if DEBUG else '--detach',
     ] + docker_args + [
         '-v', '%s:%s' % (x_screen_path, x_screen_path),
         '-v', '%s:%s' % (PULSE_COOKIE_PATH, '/tmp/.pulse-cookie'),
@@ -356,17 +365,23 @@ def run(app):
 
     print ' '.join(args)
 
-    docker_proc = subprocess.Popen(args)
-
     if not host_x11 and SHARE_CLIPBOARD:
         thread = threading.Thread(target=share_clipboard, args=(x_num,))
         thread.daemon = True
         thread.start()
 
-    try:
-        docker_proc.wait()
-    finally:
-        clean_up()
+    if DEBUG:
+        try:
+            subprocess.check_call(args)
+        finally:
+            clean_up()
+    else:
+        docker_id = subprocess.check_output(args).strip()
+
+        try:
+            subprocess.check_call(['docker', 'wait', docker_id])
+        finally:
+            clean_up()
 
 def set_clipboard(num, val):
     proc = subprocess.Popen(

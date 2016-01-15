@@ -1,6 +1,6 @@
 {
     "gpu": "auto",
-    "dpi": null,
+    "dpi": "96",
     "increase_shm": true,
     "sudo_docker": true,
     "share_clipboard": true,

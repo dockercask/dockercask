@@ -320,15 +320,19 @@ def run(app):
             kill_process(x_proc)
         if not host_x11:
             try:
-                os.remove(x_auth_path)
-            except:
-                pass
-            try:
                 subprocess.check_output([
                     'xauth',
                     'remove',
                     ':' + x_num,
                 ], stderr=subprocess.PIPE)
+            except:
+                pass
+            try:
+                os.remove(x_auth_path)
+            except:
+                pass
+            try:
+                os.remove(x_screen_path)
             except:
                 pass
 

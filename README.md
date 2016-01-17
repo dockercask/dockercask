@@ -26,6 +26,29 @@ sudo apt-get install xsel xserver-xephyr docker-engine linux-image-extra-virtual
 sudo service docker start
 ```
 
+### docker v1.10.0
+
+Docker v1.10.0 is required which is still in testing. Use the commands below
+to install the v1.10.0 release candidate.
+
+##### archlinux
+
+```bash
+git clone https://github.com/dockercask/docker-dev.git
+cd docker-dev
+makepkg
+pacman -U docker-*.pkg.tar.xz
+systemctl restart docker.service
+
+```
+
+##### ubuntu
+
+```bash
+curl -fsSL https://test.docker.com/ | sh
+sudo service docker restart
+```
+
 ### setup pulseaudio
 
 PulseAudio will not work when shared memory is used. The commands below will
@@ -92,11 +115,7 @@ Docker releases before v1.10.0 have a hard coded `/dev/shm` size of 64m. This
 is too small for Chromium's IPC and also Firefox's Electrolysis which uses the
 same IPC code from Chromium. With this size the browser will frequently crash
 when the `/dev/shm` is full. Other apps will also have rendering issues without
-increasing the `/dev/shm` size. The `--shm-size` option was added in v1.10.0
-and will be used when available. Docker v1.10.0 will be needed when
-running these apps. ArchLinux users can use the `PKGBUILD` in
-[github.com/dockercask/docker-dev](https://github.com/dockercask/docker-dev)
-to install v1.10.0.
+increasing the `/dev/shm` size.
 
 ### lastpass
 

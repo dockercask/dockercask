@@ -424,7 +424,7 @@ def set_clipboard(num, val):
     process.stdin.write(val)
     process.stdin.close()
 
-    for _ in xrange(50):
+    for _ in xrange(100):
         time.sleep(0.005)
         exit_code = process.poll()
         if exit_code is not None:
@@ -441,7 +441,7 @@ def get_clipboard(num):
         stdout=subprocess.PIPE,
     )
 
-    for _ in xrange(50):
+    for _ in xrange(100):
         time.sleep(0.005)
         exit_code = process.poll()
         if exit_code is not None:

@@ -444,6 +444,8 @@ if sys.argv[-1] == '--debug':
 
 if command == 'build':
     app = sys.argv[2]
+
+    exists_pull()
     build(app)
 
 elif command == 'build-all':
@@ -455,6 +457,9 @@ elif command == 'update':
 
 elif command == 'add':
     app = sys.argv[2]
+
+    exists_pull()
+    exists_build(app)
     add(app)
 
 elif command == 'run':

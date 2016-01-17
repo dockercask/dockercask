@@ -109,12 +109,26 @@ def kill_process(process):
                     raise
             time.sleep(0.01)
 
+def image_exists(image):
+    image_id = subprocess.check_output([
+        'docker',
+        'images',
+        '-q',
+        image,
+    ]).strip()
+
+    return bool(image_id)
+
 def pull():
     subprocess.check_call((['sudo'] if SUDO_DOCKER else []) + [
         'docker',
         'pull',
         'pritunl/archlinux',
     ])
+
+def exists_pull():
+    if not image_exists('pritunl/archlinux'):
+        pull()
 
 def build(app):
     app = app.split('#')[0]

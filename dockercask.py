@@ -472,8 +472,8 @@ def share_clipboard(app_num):
             time.sleep(0.2)
         except:
             if not interrupt:
-                traceback.print_stack()
-                time.sleep(5)
+                traceback.print_exc()
+                time.sleep(3)
 
 
 command = sys.argv[1]

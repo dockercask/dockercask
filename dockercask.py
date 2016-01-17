@@ -214,7 +214,6 @@ def run(app):
     docker_args = []
     volume_args = []
 
-    app_conf_data = {}
     with open(app_conf_path, 'r') as app_conf_file:
         app_conf_data = json.loads(app_conf_file.read())
 
@@ -236,8 +235,6 @@ def run(app):
 
     if increase_shm:
         docker_args += ['--shm-size', '1g']
-
-    downloads_dir = os.path.join(USER_HOME_DIR, 'Downloads')
 
     for src, dest in DEFAULT_VOLUMES:
         volume_args += [

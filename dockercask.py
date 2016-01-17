@@ -52,10 +52,9 @@ mkdirs(CONF_DIR)
 if not os.path.exists(BASE_CONF_PATH):
     shutil.copyfile(
         os.path.join(ROOT_DIR, 'apps', 'base', 'settings.json'),
-        BASE_CONF_PATH
+        BASE_CONF_PATH,
     )
 
-conf_data = {}
 with open(BASE_CONF_PATH, 'r') as conf_file:
     conf_data = json.loads(conf_file.read())
 

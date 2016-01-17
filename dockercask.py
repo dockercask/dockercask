@@ -194,6 +194,19 @@ def add(app):
             icon_path,
         ))
 
+def remove(app):
+    app_dir = os.path.join(HOME_DIR, app)
+    app_conf_path = os.path.join(CONF_DIR, app + '.json')
+    desktop_entry_path = os.path.join(DESKTOP_DIR,
+        'docker-%s.desktop' % app.replace('#', '-'))
+
+    for path in (app_dir, app_conf_path, desktop_entry_path):
+        subprocess.check_call([
+            'rm',
+            '-rf',
+            path,
+        ])
+
 def run(app):
     try:
         subprocess.check_call([
@@ -461,6 +474,11 @@ elif command == 'add':
     exists_pull()
     exists_build(app)
     add(app)
+
+elif command == 'remove':
+    app = sys.argv[2]
+
+    remove(app)
 
 elif command == 'run':
     app = sys.argv[2]

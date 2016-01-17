@@ -214,6 +214,10 @@ def run(app):
     docker_args = []
     volume_args = []
 
+    if not os.path.exists(app_dir):
+        print 'App must be added before running'
+        exit(1)
+
     with open(app_conf_path, 'r') as app_conf_file:
         app_conf_data = json.loads(app_conf_file.read())
 
@@ -221,10 +225,6 @@ def run(app):
     privileged = app_conf_data.get('privileged')
     increase_shm = app_conf_data.get('increase_shm', INCREASE_SHM)
     dpi = app_conf_data.get('dpi', DPI)
-
-    if not os.path.exists(app_dir):
-        print 'App must be added before running'
-        exit(1)
 
     if DEBUG:
         docker_args.append('-it')

@@ -167,6 +167,8 @@ def add(app):
     app_dir = os.path.join(HOME_DIR, app)
     icon_path = os.path.join(ROOT_DIR, 'apps', app.split('#')[0], 'icon.png')
     app_conf_path = os.path.join(CONF_DIR, app + '.json')
+    desktop_entry_path = os.path.join(DESKTOP_DIR,
+        'docker-%s.desktop' % app.replace('#', '-'))
 
     mkdirs(app_dir)
 
@@ -185,8 +187,7 @@ def add(app):
     formated_app_name = app.replace('#', ' ').replace('-', ' ').split()
     formated_app_name = ' '.join([x.capitalize() for x in formated_app_name])
 
-    with open(os.path.join(DESKTOP_DIR,
-            'docker-%s.desktop' % app.replace('#', '-')), 'w') as desktop_file:
+    with open(desktop_entry_path, 'w') as desktop_file:
         desktop_file.write(DESKTOP_ENTRY % (
             formated_app_name,
             formated_app_name,

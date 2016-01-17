@@ -417,17 +417,41 @@ def run(app):
             clean_up()
 
 def set_clipboard(num, val):
-    proc = subprocess.Popen(
+    process = subprocess.Popen(
         ['xsel', '--display', ':' + num, '-b', '-i'],
         stdin=subprocess.PIPE,
     )
-    proc.communicate(input=val)
-    proc.wait()
+    process.stdin.write(val)
+    process.stdin.close()
+
+    for _ in xrange(50):
+        time.sleep(0.005)
+        exit_code = process.poll()
+        if exit_code is not None:
+            if exit_code != 0:
+                raise Exception('Error from xsel process')
+            return
+
+    process.kill()
+    raise Exception('Timeout setting clipboard')
 
 def get_clipboard(num):
-    return subprocess.check_output(
+    process = subprocess.Popen(
         ['xsel', '--display', ':' + num, '-b', '-o'],
+        stdout=subprocess.PIPE,
     )
+
+    for _ in xrange(50):
+        time.sleep(0.005)
+        exit_code = process.poll()
+        if exit_code is not None:
+            if exit_code != 0:
+                raise Exception('Error from xsel process')
+            output, _ = process.communicate()
+            return output
+
+    process.kill()
+    raise Exception('Timeout getting clipboard')
 
 def share_clipboard(app_num):
     time.sleep(1)

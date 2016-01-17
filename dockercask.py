@@ -199,7 +199,7 @@ def run(app):
         subprocess.check_call([
             'wmctrl',
             '-F',
-            '-a',
+            '-R',
             app,
         ])
         return

@@ -151,13 +151,17 @@ def build(app):
     if app == 'base':
         build('base-' + GPU)
 
+def exists_build(app):
+    if not image_exists('dockercask/' + app):
+        build(app)
+
 def build_all():
     build('base')
     for app in os.listdir(HOME_DIR):
         if not os.path.isdir(os.path.join(HOME_DIR, app)) or \
                 app.startswith('.'):
             continue
-        build(app)
+        exists_build(app)
 
 def add(app):
     app_dir = os.path.join(HOME_DIR, app)

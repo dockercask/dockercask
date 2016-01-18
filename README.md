@@ -60,7 +60,7 @@ pulseaudio -k
 pulseaudio --start
 ```
 
-### add and application
+### add application
 
 Adding an application will first pull the ArchLinux docker image then build the
 images needed for the application. After the images have been built the
@@ -99,7 +99,7 @@ python2 dockercask.py run firefox#2
 python2 dockercask.py run firefox#3
 ```
 
-### remove and application
+### remove application
 
 Removing an application will delete the data directory in `~/Docker` and the
 desktop entry.

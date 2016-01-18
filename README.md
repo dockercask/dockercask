@@ -144,12 +144,6 @@ the web browser. If the web browser is compromised the password manager could
 also be compromised. This can be avoided by running a separate browser for a
 password manager or using the LastPass desktop app.
 
-### slack
-
-For slack to close properly you will need to uncheck "Leave app running in
-notification area when the window is closed". Hardware acceleration should
-also be disabled.
-
 ### keylogger test
 
 This will demonstrate an example X11 keylogger

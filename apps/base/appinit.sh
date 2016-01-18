@@ -24,4 +24,4 @@ xauth -f /tmp/.Xauth add $DISPLAY MIT-MAGIC-COOKIE-1 $XCOOKIE
 xfwm4 --daemon --replace
 sleep 0.1
 xfwm4 --daemon --replace
-sleep 0.1
+sleep 1

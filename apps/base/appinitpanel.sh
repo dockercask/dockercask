@@ -22,4 +22,4 @@ touch /tmp/.Xauth
 xauth -f /tmp/.Xauth add $DISPLAY MIT-MAGIC-COOKIE-1 $XCOOKIE
 
 startxfce4&
-sleep 0.25
+sleep 3

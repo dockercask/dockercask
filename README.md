@@ -70,7 +70,7 @@ added to `~/.local/share/applications/docker-app-name.desktop` this will allow
 launching the application from the start menu.
 
 ```bash
-python2 dockercask.py add chrome
+python2 dockercask.py add firefox
 ```
 
 ### run application
@@ -79,7 +79,7 @@ An application can be started using the desktop entry or by running the command
 below.
 
 ```bash
-python2 dockercask.py run chrome
+python2 dockercask.py run firefox
 ```
 
 ![firefox](screenshots/firefox.png)
@@ -90,12 +90,12 @@ Only one instance of an application can be run. To use multiple instances
 suffix the application name with a number.
 
 ```bash
-python2 dockercask.py add chrome#1
-python2 dockercask.py add chrome#2
-python2 dockercask.py add chrome#3
-python2 dockercask.py run chrome#1
-python2 dockercask.py run chrome#2
-python2 dockercask.py run chrome#3
+python2 dockercask.py add firefox#1
+python2 dockercask.py add firefox#2
+python2 dockercask.py add firefox#3
+python2 dockercask.py run firefox#1
+python2 dockercask.py run firefox#2
+python2 dockercask.py run firefox#3
 ```
 
 ### remove application
@@ -104,7 +104,7 @@ Removing an application will delete the data directory in `~/Docker` and the
 desktop entry.
 
 ```bash
-python2 dockercask.py remove chrome
+python2 dockercask.py remove firefox
 ```
 
 ### xauthority
@@ -147,7 +147,6 @@ password manager or using the LastPass desktop app.
 ### known issues
 
 * Closing a Xephyr window will crash the PulseAudio service
-* Firefox is currently not working.
 
 ### keylogger test
 

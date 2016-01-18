@@ -64,16 +64,16 @@ pulseaudio --start
 
 Adding an application will first pull the ArchLinux docker image then build the
 images needed for the application. After the images have been built the
-directory `~/Docker/firefox` will be created which will be mounted to the
+directory `~/Docker/app-name` will be created which will be mounted to the
 docker container to store the application data. A desktop entry will also be
-added to `~/.local/share/applications/docker-firefox.desktop` this will allow
+added to `~/.local/share/applications/docker-app-name.desktop` this will allow
 launching the application from the start menu.
 
 ```bash
-python2 dockercask.py add firefox
+python2 dockercask.py add chrome
 ```
 
-### run firefox
+### run application
 
 An application can be started using the desktop entry or by running the command
 below.

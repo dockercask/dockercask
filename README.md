@@ -67,11 +67,10 @@ images needed for the application. After the images have been built the
 directory `~/Docker/firefox` will be created which will be mounted to the
 docker container to store the application data. A desktop entry will also be
 added to `~/.local/share/applications/docker-firefox.desktop` this will allow
-launching the application for the start menu.
+launching the application from the start menu.
 
 ```bash
 python2 dockercask.py add firefox
-python2 dockercask.py run firefox
 ```
 
 ### run firefox
@@ -135,7 +134,8 @@ Docker releases before v1.10.0 have a hard coded `/dev/shm` size of 64m. This
 is too small for Chromium's IPC and also Firefox's Electrolysis which uses the
 same IPC code from Chromium. With this size the browser will frequently crash
 when the `/dev/shm` is full. Other apps will also have rendering issues without
-increasing the `/dev/shm` size.
+increasing the `/dev/shm` size. A `--shm-size` of 1g will be used for all
+applications.
 
 ### lastpass
 

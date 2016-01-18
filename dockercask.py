@@ -152,6 +152,9 @@ def build(app):
         build('base-' + GPU)
 
 def exists_build(app):
+    if not image_exists('dockercask/base'):
+        build('base')
+
     if not image_exists('dockercask/' + app):
         build(app)
 

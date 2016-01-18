@@ -60,16 +60,24 @@ pulseaudio -k
 pulseaudio --start
 ```
 
-### init
+### add and application
+
+Adding an application will first pull the ArchLinux docker image then build the
+images needed for the application. After the images have been built the
+directory `~/Docker/firefox` will be created which will be mounted to the
+docker container to store the application data. A desktop entry will also be
+added to `~/.local/share/applications/docker-firefox.desktop` this will allow
+launching the application for the start menu.
 
 ```bash
 python2 dockercask.py add firefox
-python2 dockercask.py add spotify
-python2 dockercask.py add thunderbird
-python2 dockercask.py build-all
+python2 dockercask.py run firefox
 ```
 
 ### run firefox
+
+An application can be started using the desktop entry or by running the command
+below.
 
 ```bash
 python2 dockercask.py run firefox
@@ -79,13 +87,25 @@ python2 dockercask.py run firefox
 
 ### run multiple instances
 
+Only one instance of an application can be run. To use multiple instances
+suffix the application name with a number.
+
 ```bash
 python2 dockercask.py add firefox#1
-python2 dockercask.py run firefox#1
 python2 dockercask.py add firefox#2
-python2 dockercask.py run firefox#2
 python2 dockercask.py add firefox#3
+python2 dockercask.py run firefox#2
+python2 dockercask.py run firefox#1
 python2 dockercask.py run firefox#3
+```
+
+### remove and application
+
+Removing an application will delete the data directory in `~/Docker` and the
+desktop entry.
+
+```bash
+python2 dockercask.py remove firefox
 ```
 
 ### xauthority

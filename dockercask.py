@@ -490,8 +490,14 @@ elif command == 'remove':
 
 elif command == 'run':
     app = sys.argv[2]
+
+    exists_pull()
+    exists_build(app)
     run(app)
 
 else:
     app = sys.argv[1]
+
+    exists_pull()
+    exists_build(app)
     run(app)

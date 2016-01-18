@@ -392,6 +392,8 @@ def run(app):
         '-v', '/var/run/user/%s/pulse/native:/var/run/pulse/native' % (
             os.getuid()),
     ] + volume_args + [
+        '-u', 'docker',
+        '-e', 'HOME=/home/docker',
         '-e', 'DISPLAY=:' + x_num,
         '-e', 'XAUTHORITY=/tmp/.Xauth',
         '-e', 'XCOOKIE=' + x_cookie,

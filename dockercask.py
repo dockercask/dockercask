@@ -164,7 +164,7 @@ def build_all():
         if not os.path.isdir(os.path.join(HOME_DIR, app)) or \
                 app.startswith('.'):
             continue
-        exists_build(app)
+        build(app)
 
 def add(app):
     app_dir = os.path.join(HOME_DIR, app)

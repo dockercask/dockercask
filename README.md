@@ -94,8 +94,8 @@ suffix the application name with a number.
 python2 dockercask.py add firefox#1
 python2 dockercask.py add firefox#2
 python2 dockercask.py add firefox#3
-python2 dockercask.py run firefox#2
 python2 dockercask.py run firefox#1
+python2 dockercask.py run firefox#2
 python2 dockercask.py run firefox#3
 ```
 

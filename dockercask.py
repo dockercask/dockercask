@@ -152,6 +152,8 @@ def build(app):
         build('base-' + GPU)
 
 def exists_build(app):
+    app = app.split('#')[0]
+
     if not image_exists('dockercask/base'):
         build('base')
 

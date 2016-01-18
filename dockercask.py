@@ -418,7 +418,7 @@ def run(app):
 
 def set_clipboard(num, val):
     proc = subprocess.Popen(
-        ['xsel', '--display', ':' + num, '-b', '-i', '-t', '450'],
+        ['xsel', '--display', ':' + num, '-b', '-i', '-t', '500'],
         stdin=subprocess.PIPE,
     )
     proc.communicate(input=val)
@@ -426,7 +426,7 @@ def set_clipboard(num, val):
 
 def get_clipboard(num):
     return subprocess.check_output(
-        ['xsel', '--display', ':' + num, '-b', '-o', '-t', '450'],
+        ['xsel', '--display', ':' + num, '-b', '-o', '-t', '500'],
     )
 
 def share_clipboard(app_num):

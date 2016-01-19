@@ -398,11 +398,16 @@ def run(app):
 
         # The module-x11-publish for the Xephyr display does not appear to be
         # needed and will crash the pulseaudio server if the Xephyr window is
-        # closed while the module is loaded.
+        # closed while the module is loaded. Module is loaded by xfce4-sesion
         def pacmd_thread_func():
-            for _ in xrange(20):
-                time.sleep(0.5)
-                unload_pulseaudio(x_num)
+            if DEBUG:
+                while True:
+                    time.sleep(1)
+                    unload_pulseaudio(x_num)
+            else:
+                for _ in xrange(20):
+                    time.sleep(0.5)
+                    unload_pulseaudio(x_num)
 
         thread = threading.Thread(target=pacmd_thread_func)
         thread.daemon = True

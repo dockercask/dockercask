@@ -400,8 +400,8 @@ def run(app):
         # needed and will crash the pulseaudio server if the Xephyr window is
         # closed while the module is loaded.
         def pacmd_thread_func():
-            for i in xrange(10):
-                time.sleep(1)
+            for _ in xrange(20):
+                time.sleep(0.5)
                 unload_pulseaudio(x_num)
 
         thread = threading.Thread(target=pacmd_thread_func)

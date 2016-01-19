@@ -20,7 +20,6 @@ PULSE_SERVER = 'unix:/var/run/pulse/native'
 
 
 
-# Init
 DESKTOP_ENTRY = '''
 [Desktop Entry]
 Version=1.0
@@ -66,6 +65,8 @@ SHARE_THEMES = conf_data.get('share_themes', False)
 SHARE_ICONS = conf_data.get('share_icons', False)
 SHARE_USER_FONTS = conf_data.get('share_user_fonfs', True)
 SHARE_USER_THEMES = conf_data.get('share_user_themes', True)
+DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
+DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
 DPI = conf_data.get('dpi')
 DEBUG = False
 
@@ -78,8 +79,7 @@ if GPU == 'auto':
     except:
         GPU = 'intel'
 
-DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
-DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
+
 
 def kill_process(process):
     # Attempt to interrupt process then kill

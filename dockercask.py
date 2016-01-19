@@ -338,10 +338,6 @@ def run(app):
         global interrupt
         interrupt = True
 
-        if not host_x11:
-            kill_pulseaudio(x_num)
-            unload_pulseaudio(x_num)
-
         if docker_id:
             try:
                 subprocess.check_output([

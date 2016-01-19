@@ -329,6 +329,10 @@ def run(app):
         global interrupt
         interrupt = True
 
+        if not host_x11:
+            kill_pulseaudio(x_num)
+            unload_pulseaudio(x_num)
+
         if docker_id:
             try:
                 subprocess.check_output([
@@ -461,6 +465,61 @@ def share_clipboard(app_num):
             if not interrupt:
                 traceback.print_exc()
                 time.sleep(3)
+
+def unload_pulseaudio(x_num, count=0):
+    if count > 2:
+        return
+
+    try:
+        modules = subprocess.check_output(['pacmd', 'list-modules'])
+    except:
+        traceback.print_exc()
+        time.sleep(0.1)
+        unload_pulseaudio(x_num, count + 1)
+        return
+    index = None
+
+    for line in modules.splitlines():
+        line = line.strip()
+        if line.startswith('index:'):
+            index = line.split()[-1]
+
+        if 'display=:' + x_num in line and index:
+            for _ in xrange(3):
+                try:
+                    subprocess.check_call(['pacmd', 'unload-module', index])
+                    break
+                except:
+                    traceback.print_exc()
+                    time.sleep(0.1)
+
+def kill_pulseaudio(x_num, count=0):
+    if count > 2:
+        return
+
+    try:
+        clients = subprocess.check_output(['pacmd', 'list-clients'])
+    except:
+        traceback.print_exc()
+        time.sleep(0.1)
+        kill_pulseaudio(x_num, count + 1)
+        return
+    index = None
+
+    for line in clients.splitlines():
+        line = line.strip()
+        if line.startswith('index:'):
+            index = line.split()[-1]
+
+        if 'window.x11.display' in line and ':' + x_num in line and index:
+            for _ in xrange(3):
+                try:
+                    subprocess.check_call(['pacmd', 'kill-client', index])
+                    break
+                except:
+                    traceback.print_exc()
+                    time.sleep(0.1)
+
 
 
 command = sys.argv[1]

@@ -380,13 +380,22 @@ def run(app):
 
         x_proc = subprocess.Popen(args + [':' + x_num])
 
-        def thread_func():
+        def x_thread_func():
             try:
                 x_proc.wait()
             finally:
                 clean_up()
 
-        thread = threading.Thread(target=thread_func)
+        thread = threading.Thread(target=x_thread_func)
+        thread.start()
+
+        def pacmd_thread_func():
+            for i in xrange(10):
+                time.sleep(1)
+                unload_pulseaudio(x_num)
+
+        thread = threading.Thread(target=pacmd_thread_func)
+        thread.daemon = True
         thread.start()
 
     args = (['sudo'] if SUDO_DOCKER else []) + [

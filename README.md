@@ -144,10 +144,6 @@ the web browser. If the web browser is compromised the password manager could
 also be compromised. This can be avoided by running a separate browser for a
 password manager or using the LastPass desktop app.
 
-### known issues
-
-* Closing a Xephyr window will crash the PulseAudio service
-
 ### keylogger test
 
 This will demonstrate an example X11 keylogger

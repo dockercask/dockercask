@@ -67,7 +67,7 @@ SHARE_USER_FONTS = conf_data.get('share_user_fonfs', True)
 SHARE_USER_THEMES = conf_data.get('share_user_themes', True)
 DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
 DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
-DPI = conf_data.get('dpi')
+DPI = conf_data.get('dpi', '96')
 DEBUG = False
 
 GPU = conf_data.get('gpu', 'auto')

@@ -82,6 +82,7 @@ DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
 DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
 
 def kill_process(process):
+    # Attempt to interrupt process then kill
     terminated = False
 
     for _ in xrange(200):
@@ -250,6 +251,9 @@ def run(app):
         cmd.append('/bin/bash')
 
     if privileged:
+        # Will only be added when set in config. The config files are mounted
+        # read only. It isn't possible for a docker container to modify its
+        # own config to enable this
         docker_args += ['--privileged']
 
     if increase_shm:
@@ -289,9 +293,11 @@ def run(app):
     mkdirs(themes_dir)
 
     if host_x11:
+        # Get the cookie for the host display
         x_cookie = subprocess.check_output(['xauth', 'list', ':0']).split()[-1]
         x_num = '0'
     else:
+        # Create a cookie for the new Xephyr window
         x_cookie = subprocess.check_output(['mcookie'])
         x_num = str(random.randint(1000, 32000))
         x_auth_path = os.path.join(TMP_DIR, '.X11-docker-' + x_num)
@@ -299,6 +305,7 @@ def run(app):
         with open(x_auth_path, 'w') as _:
             pass
 
+        # Store the cookie in a file for Xephyr to read
         subprocess.check_call([
             'xauth',
             '-f', x_auth_path,
@@ -308,6 +315,8 @@ def run(app):
             x_cookie,
         ])
 
+        # Add the cookie to the hosts xauth to allow xsel and pulseaudio to
+        # access the Xephyr window
         subprocess.check_call([
             'xauth',
             'add',
@@ -347,6 +356,7 @@ def run(app):
             kill_process(x_proc)
         if not host_x11:
             try:
+                # Remove the Xephyr display from xauth
                 subprocess.check_output([
                     'xauth',
                     'remove',
@@ -378,6 +388,7 @@ def run(app):
         if dpi:
             args += ['-dpi', dpi]
 
+        # Create Xephyr window secured with cookie
         x_proc = subprocess.Popen(args + [':' + x_num])
 
         def x_thread_func():
@@ -389,6 +400,9 @@ def run(app):
         thread = threading.Thread(target=x_thread_func)
         thread.start()
 
+        # The module-x11-publish for the Xephyr display does not appear to be
+        # needed and will crash the pulseaudio server if the Xephyr window is
+        # closed while the module is loaded.
         def pacmd_thread_func():
             for i in xrange(10):
                 time.sleep(1)
@@ -476,6 +490,8 @@ def share_clipboard(app_num):
                 time.sleep(3)
 
 def unload_pulseaudio(x_num, count=0):
+    # Unload the pulse audio module specific to the Xephyr window. Pacmd will
+    # sometimes return an error when busy.
     if count > 2:
         return
 
@@ -503,6 +519,8 @@ def unload_pulseaudio(x_num, count=0):
                     time.sleep(0.1)
 
 def kill_pulseaudio(x_num, count=0):
+    # Kill the pulse audio client specific to the Xephyr window. Pacmd will
+    # sometimes return an error when busy.
     if count > 2:
         return
 

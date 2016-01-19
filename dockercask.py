@@ -320,8 +320,12 @@ def run(app):
 
     x_proc = None
     docker_id = None
+    clean_lock = threading.Lock()
 
     def clean_up():
+        if not clean_lock.acquire(False):
+            return
+
         global interrupt
         interrupt = True
 

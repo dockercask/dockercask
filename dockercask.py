@@ -214,6 +214,11 @@ def remove(app):
             path,
         ])
 
+def app_exists(app):
+    if os.path.exists(os.path.join(HOME_DIR, app)):
+        return True
+    return False
+
 def run(app):
     try:
         subprocess.check_call([
@@ -233,10 +238,6 @@ def run(app):
     cmd = []
     docker_args = []
     volume_args = []
-
-    if not os.path.exists(app_dir):
-        print 'App must be added before running'
-        exit(1)
 
     with open(app_conf_path, 'r') as app_conf_file:
         app_conf_data = json.loads(app_conf_file.read())
@@ -606,15 +607,15 @@ elif command == 'remove':
 
     remove(app)
 
-elif command == 'run':
-    app = sys.argv[2]
-
-    exists_pull()
-    exists_build(app)
-    run(app)
-
 else:
-    app = sys.argv[1]
+    if command == 'run':
+        app = sys.argv[2]
+    else:
+        app = sys.argv[1]
+
+    if not app_exists(app):
+        print 'App must be added before running'
+        exit(1)
 
     exists_pull()
     exists_build(app)

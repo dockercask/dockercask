@@ -19,6 +19,7 @@ containers.
 * Slack
 * Spotify
 * Thunderbird
+* Tor Browser
 
 ### archlinux install
 

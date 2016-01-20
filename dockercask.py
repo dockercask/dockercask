@@ -456,6 +456,9 @@ def run(app):
             clean_up()
 
 def set_clipboard(num, val):
+    if not val:
+        return
+
     process = subprocess.Popen(
         ['xsel', '--display', ':' + num, '-b', '-i', '-t', '450'],
         stdin=subprocess.PIPE,

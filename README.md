@@ -9,6 +9,17 @@ All containers are run without `--privileged` mode inside seperate
 clipboard is shared using `xsel` and PulseAudio is aviaible in the docker
 containers.
 
+### available apps
+
+* Chrome
+* Chromium
+* Firefox
+* Firefox Aurora
+* Lastpass
+* Slack
+* Spotify
+* Thunderbird
+
 ### archlinux install
 
 ```bash

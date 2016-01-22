@@ -461,13 +461,13 @@ def set_clipboard(num, val):
         return
 
     process = subprocess.Popen(
-        ['xsel', '--display', ':' + num, '-b', '-i', '-t', '450'],
+        ['xsel', '--display', ':' + num, '-b', '-i', '-t', '250'],
         stdin=subprocess.PIPE,
     )
     process.stdin.write(val)
     process.stdin.close()
 
-    for _ in xrange(100):
+    for _ in xrange(75):
         time.sleep(0.005)
         exit_code = process.poll()
         if exit_code is not None:
@@ -480,18 +480,18 @@ def set_clipboard(num, val):
 
 def get_clipboard(num):
     process = subprocess.Popen(
-        ['xsel', '--display', ':' + num, '-b', '-o', '-t', '450'],
+        ['xsel', '--display', ':' + num, '-b', '-o', '-t', '250'],
         stdout=subprocess.PIPE,
     )
 
-    for _ in xrange(100):
+    for _ in xrange(75):
         time.sleep(0.005)
         exit_code = process.poll()
         if exit_code is not None:
             if exit_code != 0:
                 raise Exception('Error from xsel process')
             output, _ = process.communicate()
-            return output
+            return output[:3072]
 
     process.kill()
     raise Exception('Timeout getting clipboard')
@@ -499,9 +499,15 @@ def get_clipboard(num):
 def share_clipboard(app_num):
     time.sleep(1)
 
-    val = get_clipboard('0')
-    set_clipboard(app_num, val)
-    clipboards = [val, get_clipboard(app_num)]
+    try:
+        val = get_clipboard('0')
+        set_clipboard(app_num, val)
+        clipboards = [val, get_clipboard(app_num)]
+    except:
+        traceback.print_exc()
+        time.sleep(3)
+        share_clipboard(app_num)
+        return
 
     while not interrupt:
         try:

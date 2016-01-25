@@ -15,7 +15,7 @@ APP_DIR = '~/.local/share/applications'
 PULSE_COOKIE_PATH = '~/.config/pulse/cookie'
 TMP_DIR = '/tmp'
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
-SCRIPT_PATH = os.path.join(ROOT_DIR, __file__)
+SCRIPT_PATH = os.path.join(ROOT_DIR, os.path.basename( __file__))
 PULSE_SERVER = 'unix:/var/run/pulse/native'
 
 

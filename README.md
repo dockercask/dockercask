@@ -38,11 +38,6 @@ sudo apt-get install xsel wmctrl xserver-xephyr docker-engine linux-image-extra-
 sudo service docker start
 ```
 
-### docker v1.10.0
-
-Docker v1.10.0 is required which is still in testing. Use the commands below
-to install the v1.10.0 release candidate.
-
 ##### archlinux
 
 ```bash

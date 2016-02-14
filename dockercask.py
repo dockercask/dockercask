@@ -219,7 +219,7 @@ def app_exists(app):
         return True
     return False
 
-def run(app):
+def focus_app(app):
     try:
         subprocess.check_call([
             'wmctrl',
@@ -227,10 +227,12 @@ def run(app):
             '-R',
             app,
         ])
-        return
+        return True
     except subprocess.CalledProcessError:
         pass
+    return False
 
+def run(app):
     app_dir = os.path.join(HOME_DIR, app)
     app_conf_path = os.path.join(CONF_DIR, app + '.json')
     fonts_dir = os.path.join(USER_HOME_DIR, '.fonts')
@@ -623,6 +625,8 @@ else:
         print 'App must be added before running'
         exit(1)
 
+    if focus_app(app):
+        exit(0)
     exists_pull()
     exists_build(app)
     run(app)

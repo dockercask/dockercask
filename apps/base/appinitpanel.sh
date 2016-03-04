@@ -21,5 +21,6 @@ sed -i "s/{{ dpi }}/`getsetting dpi`/" /home/docker/.config/xfce4/xfconf/xfce-pe
 touch /tmp/.Xauth
 xauth -f /tmp/.Xauth add $DISPLAY MIT-MAGIC-COOKIE-1 $XCOOKIE
 
+sleep 0.5
 startxfce4&
-sleep 3
+sleep 5

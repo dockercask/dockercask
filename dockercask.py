@@ -603,8 +603,17 @@ elif command == 'build-all':
     build_all()
 
 elif command == 'update':
+    if len(sys.argv) > 2:
+        app = sys.argv[2]
+    else:
+        app = None
+
     pull()
-    build_all()
+    if app:
+        build('base')
+        build(app)
+    else:
+        build_all()
 
 elif command == 'add':
     app = sys.argv[2]

@@ -260,7 +260,11 @@ def run(app):
         docker_args += ['--privileged']
 
     if increase_shm:
-        docker_args += ['--shm-size', '2g']
+        if isinstance(increase_shm, basestring):
+            shm_size = increase_shm
+        else:
+            shm_size = '4g'
+        docker_args += ['--shm-size', shm_size]
 
     for src, dest in DEFAULT_VOLUMES:
         volume_args += [

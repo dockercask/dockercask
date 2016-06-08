@@ -526,7 +526,6 @@ def share_clipboard(app_num):
                     set_clipboard(app_num if num == '0' else '0', val)
                     clipboards[i] = val
                     clipboards[set_i] = get_clipboard(set_num)
-                    print 'set:', app_num if num == '0' else '0'
             time.sleep(0.2)
         except:
             if not interrupt:

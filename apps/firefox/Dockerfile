@@ -1,7 +1,8 @@
 FROM dockercask/base-xorg
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
-RUN pacman -S --noconfirm firefox ffmpeg gst-plugins-good gst-plugins-ugly
+RUN pacman -Sdd --noconfirm ffmpeg gst-plugins-good gst-plugins-ugly
+RUN pacman -S --noconfirm firefox
 
 RUN aurget chromium-pepper-flash
 RUN pacman -U --noconfirm /aur/chromium-pepper-flash*.pkg.tar.xz

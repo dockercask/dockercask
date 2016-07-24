@@ -257,7 +257,10 @@ def run(app):
         # Will only be added when set in config. The config files are mounted
         # read only. It isn't possible for a docker container to modify its
         # own config to enable this
-        docker_args += ['--privileged']
+        docker_args += ['--device', '/dev/dri:/dev/dri']
+        docker_args += ['--device', '/dev/nvidia0:/dev/nvidia0']
+        docker_args += ['--device', '/dev/nvidiactl:/dev/nvidiactl']
+        docker_args += ['--device', '/dev/nvidia-modeset:/dev/nvidia-modeset']
 
     if increase_shm:
         if isinstance(increase_shm, basestring):

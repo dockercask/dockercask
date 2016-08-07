@@ -13,6 +13,7 @@ USER_HOME_DIR = '~'
 HOME_DIR = '~/Docker'
 APP_DIR = '~/.local/share/applications'
 PULSE_COOKIE_PATH = '~/.config/pulse/cookie'
+LOCALTIME_PATH = '/etc/localtime'
 TMP_DIR = '/tmp'
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 SCRIPT_PATH = os.path.join(ROOT_DIR, os.path.basename( __file__))
@@ -428,10 +429,11 @@ def run(app):
         'run',
         '--rm' if DEBUG else '--detach',
     ] + docker_args + [
-        '-v', '%s:%s' % (x_screen_path, x_screen_path),
-        '-v', '%s:%s' % (PULSE_COOKIE_PATH, '/tmp/.pulse-cookie'),
-        '-v', '%s:%s' % (BASE_CONF_PATH, '/base.json:ro'),
-        '-v', '%s:%s' % (app_conf_path, '/app.json:ro'),
+        '-v', '%s:%s:ro' % (LOCALTIME_PATH, LOCALTIME_PATH),
+        '-v', '%s:%s:ro' % (x_screen_path, x_screen_path),
+        '-v', '%s:%s:ro' % (PULSE_COOKIE_PATH, '/tmp/.pulse-cookie'),
+        '-v', '%s:%s:ro' % (BASE_CONF_PATH, '/base.json'),
+        '-v', '%s:%s:ro' % (app_conf_path, '/app.json'),
         '-v', '%s:%s' % (app_dir, '/home/docker/Docker'),
         '-v', '/var/run/user/%s/pulse/native:/var/run/pulse/native' % (
             os.getuid()),

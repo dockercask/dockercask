@@ -255,9 +255,7 @@ def run(app):
         cmd.append('/bin/bash')
 
     if privileged:
-        # Will only be added when set in config. The config files are mounted
-        # read only. It isn't possible for a docker container to modify its
-        # own config to enable this
+        volume_args += ['-v', '/etc/machine-id:/etc/machine-id:ro']
         docker_args += ['--device', '/dev/dri:/dev/dri']
         docker_args += ['--device', '/dev/nvidia0:/dev/nvidia0']
         docker_args += ['--device', '/dev/nvidiactl:/dev/nvidiactl']

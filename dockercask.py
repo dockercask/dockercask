@@ -246,7 +246,6 @@ def run(app):
         app_conf_data = json.loads(app_conf_file.read())
 
     host_x11 = app_conf_data.get('host_x11')
-    privileged = app_conf_data.get('privileged')
     increase_shm = app_conf_data.get('increase_shm', INCREASE_SHM)
     dpi = app_conf_data.get('dpi', DPI)
 
@@ -254,7 +253,7 @@ def run(app):
         docker_args.append('-it')
         cmd.append('/bin/bash')
 
-    if privileged:
+    if host_x11:
         volume_args += ['-v', '/etc/machine-id:/etc/machine-id:ro']
         docker_args += ['--device', '/dev/dri:/dev/dri']
         docker_args += ['--device', '/dev/nvidia0:/dev/nvidia0']

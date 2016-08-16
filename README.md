@@ -72,6 +72,8 @@ below.
 python2 dockercask.py run chrome
 ```
 
+![chrome](screenshots/chrome.png)
+
 ### run application without sudo
 
 By default docker requires root to run. To use dockercask without sudo and
@@ -82,8 +84,6 @@ again or restart.
 ```bash
 sudo gpasswd -a ${USER} docker
 ```
-
-![chrome](screenshots/chrome.png)
 
 ### run multiple instances
 

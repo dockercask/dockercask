@@ -116,7 +116,7 @@ def image_exists(image):
         'docker',
         'images',
         '-q',
-        image,'docker
+        image,
     ]).strip()
 
     return bool(image_id)

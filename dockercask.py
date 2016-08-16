@@ -112,11 +112,11 @@ def kill_process(process):
             time.sleep(0.01)
 
 def image_exists(image):
-    image_id = subprocess.check_output([
+    image_id = subprocess.check_output((['sudo'] if SUDO_DOCKER else []) + [
         'docker',
         'images',
         '-q',
-        image,
+        image,'docker
     ]).strip()
 
     return bool(image_id)
@@ -348,7 +348,7 @@ def run(app):
 
         if docker_id:
             try:
-                subprocess.check_output([
+                subprocess.check_output((['sudo'] if SUDO_DOCKER else []) + [
                     'docker',
                     'rm',
                     '-f',
@@ -460,7 +460,8 @@ def run(app):
         docker_id = subprocess.check_output(args).strip()
 
         try:
-            subprocess.check_call(['docker', 'wait', docker_id])
+            subprocess.check_call((['sudo'] if SUDO_DOCKER else []) +
+                ['docker', 'wait', docker_id])
         finally:
             clean_up()
 

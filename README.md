@@ -108,6 +108,14 @@ desktop entry.
 python2 dockercask.py remove chrome
 ```
 
+### update images
+
+To update all the docker images and applications run the update command.
+
+```bash
+python2 dockercask.py update
+```
+
 ### xauthority
 
 The security of the host X11 screen is dependent on preventing the docker

@@ -38,24 +38,6 @@ sudo apt-get install xsel wmctrl xserver-xephyr docker-engine linux-image-extra-
 sudo service docker start
 ```
 
-##### archlinux
-
-```bash
-git clone https://github.com/dockercask/docker-dev.git
-cd docker-dev
-makepkg
-pacman -U docker-*.pkg.tar.xz
-systemctl restart docker.service
-
-```
-
-##### ubuntu
-
-```bash
-curl -fsSL https://test.docker.com/ | sh
-sudo service docker restart
-```
-
 ### setup pulseaudio
 
 PulseAudio will not work when shared memory is used. The commands below will
@@ -70,14 +52,15 @@ pulseaudio --start
 ### add application
 
 Adding an application will first pull the ArchLinux docker image then build the
-images needed for the application. After the images have been built the
-directory `~/Docker/app-name` will be created which will be mounted to the
-docker container to store the application data. A desktop entry will also be
-added to `~/.local/share/applications/docker-app-name.desktop` this will allow
+images needed for the application. This will take several minutes. After the
+images have been built the directory `~/Docker/app-name` will be created
+which will be mounted to the docker container to store the application data.
+A desktop entry will also be added to
+`~/.local/share/applications/docker-app-name.desktop` this will allow
 launching the application from the start menu.
 
 ```bash
-python2 dockercask.py add firefox
+python2 dockercask.py add chrome
 ```
 
 ### run application
@@ -86,10 +69,10 @@ An application can be started using the desktop entry or by running the command
 below.
 
 ```bash
-python2 dockercask.py run firefox
+python2 dockercask.py run chrome
 ```
 
-![firefox](screenshots/firefox.png)
+![chrome](screenshots/chrome.png)
 
 ### run multiple instances
 
@@ -97,12 +80,12 @@ Only one instance of an application can be run. To use multiple instances
 suffix the application name with a number.
 
 ```bash
-python2 dockercask.py add firefox#1
-python2 dockercask.py add firefox#2
-python2 dockercask.py add firefox#3
-python2 dockercask.py run firefox#1
-python2 dockercask.py run firefox#2
-python2 dockercask.py run firefox#3
+python2 dockercask.py add chrome#1
+python2 dockercask.py add chrome#2
+python2 dockercask.py add chrome#3
+python2 dockercask.py run chrome#1
+python2 dockercask.py run chrome#2
+python2 dockercask.py run chrome#3
 ```
 
 ### remove application
@@ -111,7 +94,7 @@ Removing an application will delete the data directory in `~/Docker` and the
 desktop entry.
 
 ```bash
-python2 dockercask.py remove firefox
+python2 dockercask.py remove chrome
 ```
 
 ### xauthority

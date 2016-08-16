@@ -58,7 +58,6 @@ if not os.path.exists(BASE_CONF_PATH):
 with open(BASE_CONF_PATH, 'r') as conf_file:
     conf_data = json.loads(conf_file.read())
 
-SUDO_DOCKER = conf_data.get('sudo_docker', True)
 INCREASE_SHM = conf_data.get('increase_shm', True)
 SHARE_CLIPBOARD = conf_data.get('share_clipboard', True)
 SHARE_FONTS = conf_data.get('share_fonts', True)
@@ -70,6 +69,16 @@ DEFAULT_WIN_SIZE = conf_data.get('default_win_size', '1024x768')
 DEFAULT_VOLUMES = conf_data.get('default_volumes', [])
 DPI = conf_data.get('dpi', '96')
 DEBUG = False
+
+try:
+    subprocess.check_call(
+        ['docker', 'ps'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    SUDO_DOCKER = False
+except:
+    SUDO_DOCKER = True
 
 GPU = conf_data.get('gpu', 'auto')
 if GPU == 'auto':

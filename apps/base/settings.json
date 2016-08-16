@@ -2,7 +2,6 @@
     "gpu": "auto",
     "dpi": "96",
     "increase_shm": true,
-    "sudo_docker": true,
     "share_clipboard": true,
     "share_fonts": true,
     "share_themes": false,

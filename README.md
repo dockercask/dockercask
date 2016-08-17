@@ -18,6 +18,7 @@ containers.
 * Lastpass
 * Slack
 * Spotify
+* Steam
 * Thunderbird
 * Tor Browser
 
@@ -51,11 +52,12 @@ pulseaudio --start
 
 ### add application
 
-Adding an application will first pull the ArchLinux docker image then build the
-images needed for the application. This will take several minutes. After the
-images have been built the directory `~/Docker/app-name` will be created
-which will be mounted to the docker container to store the application data.
-A desktop entry will also be added to
+Adding an application will first pull the base Arch Linux docker image then
+build the images needed for the application. The application images will be
+built locally, this will take several minutes. After the images have been
+built the directory `~/Docker/app-name` will be created which will be mounted
+to the docker container to store the application data. A desktop entry will
+also be added to
 `~/.local/share/applications/docker-app-name.desktop` this will allow
 launching the application from the start menu.
 
@@ -88,7 +90,8 @@ sudo gpasswd -a ${USER} docker
 ### run multiple instances
 
 Only one instance of an application can be run. To use multiple instances
-suffix the application name with a number.
+suffix the application name with a number. This will create a separate data
+directory for each instance.
 
 ```bash
 python2 dockercask.py add chrome#1
@@ -110,7 +113,8 @@ python2 dockercask.py remove chrome
 
 ### update images
 
-To update all the docker images and applications run the update command.
+To pull the latest base image and rebuild the local application images run the
+update command.
 
 ```bash
 python2 dockercask.py update
@@ -122,6 +126,7 @@ The security of the host X11 screen is dependent on preventing the docker
 containers from accessing the xauthority file which is generally stored at
 `~/.Xauthority`. If you mount the home directory or otherwise provide access
 to this file the docker container could be able to access the host X11 screen.
+The default configuration will never mount the home directory.
 
 ### clipboard sharing
 
@@ -155,7 +160,7 @@ password manager or using the LastPass desktop app.
 
 ### keylogger test
 
-This will demonstrate an example X11 keylogger
+This app will demonstrate an example X11 keylogger
 [github.com/magcius/keylog](https://github.com/magcius/keylog) that will only
 function within the Xephyr window. Preventing logging of keyboard and mouse
 events outside of the Xephyr window. The keylogger will only run inside of

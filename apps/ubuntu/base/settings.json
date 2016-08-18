@@ -12,12 +12,12 @@
     "xfwm4_font": "Verdana Bold 11",
     "gtk2_theme": "Ambiance",
     "gtk2_font": "Ubuntu 11",
-    "gtk2_icon_theme": "Human",
-    "gtk2_cursor_theme": "Vanilla-DMZ",
+    "gtk2_icon_theme": "Ubuntu-Mono-Dark",
+    "gtk2_cursor_theme": "DMZ-White",
     "gtk3_theme": "Ambiance",
     "gtk3_font": "Ubuntu 11",
-    "gtk3_icon_theme": "Human",
-    "gtk3_cursor_theme": "Vanilla-DMZ",
+    "gtk3_icon_theme": "Ubuntu-Mono-Dark",
+    "gtk3_cursor_theme": "DMZ-White",
     "default_volumes": [
         ["~/Downloads", "/home/docker/Downloads"]
     ]

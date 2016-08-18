@@ -1,8 +1,9 @@
 FROM ubuntu:xenial
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
+RUN echo "deb http://archive.ubuntu.com/ubuntu/ xenial multiverse" >> /etc/apt/sources.list
+RUN echo "deb http://archive.ubuntu.com/ubuntu/ xenial-updates multiverse" >> /etc/apt/sources.list
 RUN echo "deb http://archive.ubuntu.com/ubuntu/ xenial-security multiverse" >> /etc/apt/sources.list
-RUN echo "deb-src http://archive.ubuntu.com/ubuntu/ xenial-security multiverse" >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install --assume-yes pulseaudio alsa-utils
 RUN apt-get install --assume-yes libx11-6 ttf-dejavu ttf-freefont ttf-ubuntu-font-family

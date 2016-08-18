@@ -7,3 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes libcairo2 libfre
 RUN DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes light-themes human-icon-theme gnome-human-icon-theme
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes xauth xfwm4 xfce4-panel xfce4-session xfce4-notifyd xfce4-notifyd xfce4-settings lxappearance gtk2-engines gtk2-engines-aurora gtk2-engines-murrine gtk3-engines-xfce xcursor-themes dmz-cursor-theme
+
+RUN add-apt-repository --yes ppa:numix/ppa
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes numix-gtk-theme

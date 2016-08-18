@@ -1,6 +1,9 @@
 FROM pritunl/archlinux
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
+RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+RUN pacman -Sy
+
 RUN pacman -S --noconfirm base-devel
 RUN pacman -S --noconfirm pulseaudio pulseaudio-alsa alsa-utils
 RUN pacman -S --noconfirm libx11 ttf-dejavu ttf-freefont ttf-ubuntu-font-family

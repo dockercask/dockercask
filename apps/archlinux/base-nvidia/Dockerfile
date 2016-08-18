@@ -1,7 +1,7 @@
 FROM dockercask/base
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
-RUN pacman -S --noconfirm nvidia nvidia-libgl opencl-nvidia
+RUN pacman -S --noconfirm nvidia nvidia-libgl opencl-nvidia lib32-nvidia-libgl
 
 # RUN aurget cairo-ubuntu
 # RUN pacman -U --noconfirm /aur/cairo-ubuntu*.pkg.tar.xz

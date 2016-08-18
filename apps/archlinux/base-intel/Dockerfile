@@ -1,7 +1,7 @@
 FROM dockercask/base
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
-RUN pacman -S --noconfirm xf86-video-intel mesa-libgl opencl-mesa
+RUN pacman -S --noconfirm xf86-video-intel mesa-libgl opencl-mesa lib32-mesa-libgl
 
 # RUN aurget cairo-ubuntu
 # RUN pacman -U --noconfirm /aur/cairo-ubuntu*.pkg.tar.xz

@@ -9,6 +9,7 @@ import time
 import traceback
 import signal
 
+BASE_IMAGE = 'archlinux'
 USER_HOME_DIR = '~'
 HOME_DIR = '~/Docker'
 APP_DIR = '~/.local/share/applications'
@@ -16,6 +17,7 @@ PULSE_COOKIE_PATH = '~/.config/pulse/cookie'
 LOCALTIME_PATH = '/etc/localtime'
 TMP_DIR = '/tmp'
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+APPS_DIR = os.path.join(ROOT_DIR, BASE_IMAGE, 'apps')
 SCRIPT_PATH = os.path.join(ROOT_DIR, os.path.basename( __file__))
 PULSE_SERVER = 'unix:/var/run/pulse/native'
 
@@ -51,7 +53,7 @@ mkdirs(CONF_DIR)
 
 if not os.path.exists(BASE_CONF_PATH):
     shutil.copyfile(
-        os.path.join(ROOT_DIR, 'apps', 'base', 'settings.json'),
+        os.path.join(APPS_DIR, 'base', 'settings.json'),
         BASE_CONF_PATH,
     )
 
@@ -131,14 +133,24 @@ def image_exists(image):
     return bool(image_id)
 
 def pull():
+    if BASE_IMAGE == 'ubuntu':
+        image = 'ubuntu'
+    else:
+        image = 'pritunl/archlinux'
+
     subprocess.check_call((['sudo'] if SUDO_DOCKER else []) + [
         'docker',
         'pull',
-        'pritunl/archlinux',
+        image,
     ])
 
 def exists_pull():
-    if not image_exists('pritunl/archlinux'):
+    if BASE_IMAGE == 'ubuntu':
+        image = 'ubuntu'
+    else:
+        image = 'pritunl/archlinux'
+
+    if not image_exists(image):
         pull()
 
 def build(app):
@@ -149,7 +161,7 @@ def build(app):
     else:
         image_name = app
 
-    app_dir = os.path.join(ROOT_DIR, 'apps', app)
+    app_dir = os.path.join(APPS_DIR, app)
 
     subprocess.check_call((['sudo'] if SUDO_DOCKER else []) + [
         'docker',
@@ -181,7 +193,7 @@ def build_all():
 
 def add(app):
     app_dir = os.path.join(HOME_DIR, app)
-    icon_path = os.path.join(ROOT_DIR, 'apps', app.split('#')[0], 'icon.png')
+    icon_path = os.path.join(APPS_DIR, app.split('#')[0], 'icon.png')
     app_conf_path = os.path.join(CONF_DIR, app + '.json')
     desktop_entry_path = os.path.join(DESKTOP_DIR,
         'docker-%s.desktop' % app.replace('#', '-'))
@@ -190,7 +202,7 @@ def add(app):
 
     if not os.path.exists(app_conf_path):
         shutil.copyfile(
-            os.path.join(ROOT_DIR, 'apps', app.split('#')[0], 'settings.json'),
+            os.path.join(APPS_DIR, app.split('#')[0], 'settings.json'),
             app_conf_path,
         )
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfwm4" version="1.0">
+  <property name="general" type="empty">
+    <property name="theme" type="string" value="{{ xfwm4_theme }}"/>
+    <property name="title_font" type="string" value="{{ xfwm4_font }}"/>
+    <property name="button_layout" type="string" value="O|HMC"/>
+    <property name="borderless_maximize" type="bool" value="true"/>
+    <property name="titleless_maximize" type="bool" value="true"/>
+    <property name="workspace_count" type="int" value="1"/>
+  </property>
+</channel>

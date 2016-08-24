@@ -250,7 +250,7 @@ def focus_app(app):
             'wmctrl',
             '-F',
             '-R',
-            app,
+            'dockercask:' + app,
         ])
         return True
     except subprocess.CalledProcessError:
@@ -406,7 +406,7 @@ def run(app):
             'Xephyr',
             '-auth', x_auth_path,
             '-screen', DEFAULT_WIN_SIZE,
-            '-title', app,
+            '-title', 'dockercask:' + app,
             '-br',
             '-resizeable',
             '-no-host-grab',

@@ -448,6 +448,7 @@ def run(app):
     args = (['sudo'] if SUDO_DOCKER else []) + [
         'docker',
         'run',
+        '-i',
         '--rm' if DEBUG else '--detach',
     ] + docker_args + [
         '-v', '%s:%s:ro' % (LOCALTIME_PATH, LOCALTIME_PATH),

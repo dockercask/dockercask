@@ -7,7 +7,7 @@ RUN pacman -Sy
 RUN pacman -S --noconfirm base-devel
 RUN pacman -S --noconfirm pulseaudio pulseaudio-alsa alsa-utils
 RUN pacman -S --noconfirm libx11 ttf-dejavu ttf-freefont ttf-ubuntu-font-family
-RUN pacman -S --noconfirm wget git unzip jq
+RUN pacman -S --noconfirm wget git unzip jq nano
 
 ADD aurget.sh /usr/local/bin/aurget
 RUN chmod +x /usr/local/bin/aurget

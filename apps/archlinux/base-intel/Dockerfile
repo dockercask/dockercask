@@ -37,4 +37,4 @@ RUN wget https://github.com/dockercask/packages/raw/master/ubuntu-themes-14.04.1
 RUN pacman -Udd --noconfirm /ubuntu-themes-14.04.16.04.20160415-1-any.pkg.tar.xz
 RUN rm -f /ubuntu-themes-14.04.16.04.20160415-1-any.pkg.tar.xz
 
-RUN pacman -S --noconfirm xorg-xauth xfwm4 xfce4-panel xfce4-session xfce4-notifyd xfce4-settings lxappearance numix-themes gtk-engines gtk-engine-aurora gtk-engine-murrine human-icon-theme xcursor-vanilla-dmz
+RUN pacman -S --noconfirm xorg-xauth xfce4 xfce4-notifyd lxappearance numix-themes gtk-engines gtk-engine-aurora gtk-engine-murrine human-icon-theme xcursor-vanilla-dmz

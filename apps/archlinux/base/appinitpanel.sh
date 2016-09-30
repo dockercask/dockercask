@@ -22,5 +22,7 @@ touch /tmp/.Xauth
 xauth -f /tmp/.Xauth add $DISPLAY MIT-MAGIC-COOKIE-1 $XCOOKIE
 
 sleep 0.5
+eval `dbus-launch --sh-syntax`
+sleep 0.5
 startxfce4&
-sleep 5
+sleep 3

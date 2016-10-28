@@ -495,7 +495,7 @@ def set_clipboard(num, val):
         return
 
     process = subprocess.Popen(
-        ['xsel', '--display', ':' + num, '-b', '-i', '-t', '250'],
+        ['xsel', '--display', ':' + num, '-b', '-i'],
         stdin=subprocess.PIPE,
     )
     process.stdin.write(val)

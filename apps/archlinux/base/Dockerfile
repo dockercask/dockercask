@@ -38,3 +38,5 @@ RUN chown docker:users /home/docker/.config/xfce4/xfconf/xfce-perchannel-xml/xfc
 RUN chown docker:users /home/docker/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 RUN chown docker:users /home/docker/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml
 RUN chown docker:users /home/docker/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
+
+RUN echo 'MAKEFLAGS="-j8"' >> /etc/makepkg.conf

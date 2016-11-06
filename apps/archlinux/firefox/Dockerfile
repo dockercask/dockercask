@@ -5,10 +5,10 @@ RUN pacman -Sdd --noconfirm ffmpeg gst-plugins-good gst-plugins-ugly
 RUN pacman -S --noconfirm firefox
 
 RUN aurget chromium-pepper-flash
-RUN pacman -U --noconfirm /aur/chromium-pepper-flash*.pkg.tar.xz
+RUN pacman -U --noconfirm /aur/chromium-pepper-flash*.pkg.tar
 
 RUN aurget freshplayerplugin
-RUN pacman -U --noconfirm /aur/freshplayerplugin*.pkg.tar.xz
+RUN pacman -U --noconfirm /aur/freshplayerplugin*.pkg.tar
 
 RUN rm -rf /aur
 

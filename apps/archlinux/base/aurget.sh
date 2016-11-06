@@ -12,9 +12,9 @@ sudo -u pacman wget https://aur.archlinux.org/cgit/aur.git/snapshot/$1.tar.gz
 sudo -u pacman tar xfz $1.tar.gz
 rm $1.tar.gz
 cd $1
-sudo -u pacman makepkg --syncdeps --noconfirm
+sudo -u pacman PKGEXT=.pkg.tar makepkg --syncdeps --noconfirm
 mkdir -p /aur
-cp $1*.pkg.tar.xz /aur
+cp $1*.pkg.tar /aur
 cd ..
 rm -rf $1
 userdel -r pacman

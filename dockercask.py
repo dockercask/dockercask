@@ -269,6 +269,7 @@ def run(app):
     with open(app_conf_path, 'r') as app_conf_file:
         app_conf_data = json.loads(app_conf_file.read())
 
+    privileged = app_conf_data.get('privileged')
     host_x11 = app_conf_data.get('host_x11')
     increase_shm = app_conf_data.get('increase_shm', INCREASE_SHM)
     dpi = app_conf_data.get('dpi', DPI)
@@ -276,6 +277,9 @@ def run(app):
     if DEBUG:
         docker_args.append('-it')
         cmd.append('/bin/bash')
+
+    if privileged:
+        docker_args += ['--privileged']
 
     if host_x11:
         volume_args += ['-v', '/etc/machine-id:/etc/machine-id:ro']

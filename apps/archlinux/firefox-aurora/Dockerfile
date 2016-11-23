@@ -1,7 +1,7 @@
 FROM dockercask/base-xorg
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
-RUN pacman -Sdd --noconfirm ffmpeg gst-plugins-good gst-plugins-ugly
+RUN pacman -Sdd --noconfirm ffmpeg gst-plugins-good
 
 RUN aurget firefox-aurora
 RUN pacman -U --noconfirm /aur/firefox-aurora*.pkg.tar

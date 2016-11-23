@@ -1,7 +1,7 @@
 FROM dockercask/base-xorg
 MAINTAINER Zachary Huff <zach.huff.386@gmail.com>
 
-RUN pacman -Sdd --noconfirm ffmpeg gst-plugins-good gst-plugins-ugly
+RUN pacman -Sdd --noconfirm ffmpeg gst-plugins-good
 RUN pacman -S --noconfirm firefox
 
 RUN aurget chromium-pepper-flash

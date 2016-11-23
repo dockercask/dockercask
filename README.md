@@ -12,6 +12,7 @@ containers.
 ### available apps
 
 * Chrome
+* Chrome (Host X11)
 * Chromium
 * Firefox
 * Firefox Aurora
@@ -119,6 +120,13 @@ update command.
 ```bash
 python2 dockercask.py update
 ```
+
+### chrome host x11
+
+The `chrome-host` app will run chrome using the host X11 screen. A privileged
+docker container is used and chrome is run with the sandbox. This will still 
+provide improved security even if only to prevent CSRF attacks on services
+running on `localhost`.
 
 ### xauthority
 

@@ -23,8 +23,7 @@ PULSE_SERVER = 'unix:/var/run/pulse/native'
 
 
 
-DESKTOP_ENTRY = '''
-[Desktop Entry]
+DESKTOP_ENTRY = '''[Desktop Entry]
 Version=1.0
 Type=Application
 Terminal=false

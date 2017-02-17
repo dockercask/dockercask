@@ -204,10 +204,8 @@ def add(app):
     mkdirs(app_dir)
 
     if not os.path.exists(app_conf_path):
-        shutil.copyfile(
-            os.path.join(APPS_DIR, app.split('#')[0], 'settings.json'),
-            app_conf_path,
-        )
+        with open(app_conf_path, 'w') as app_conf_file:
+            app_conf_file.write('{}\n')
 
     if DEBUG:
         cmd = 'xfce4-terminal --command="python2 %s %s --debug"' % (
@@ -218,13 +216,14 @@ def add(app):
     formated_app_name = app.replace('#', ' ').replace('-', ' ').split()
     formated_app_name = ' '.join([x.capitalize() for x in formated_app_name])
 
-    with open(desktop_entry_path, 'w') as desktop_file:
-        desktop_file.write(DESKTOP_ENTRY % (
-            formated_app_name,
-            formated_app_name,
-            cmd,
-            icon_path,
-        ))
+    if not os.path.exists(icon_path):
+        with open(desktop_entry_path, 'w') as desktop_file:
+            desktop_file.write(DESKTOP_ENTRY % (
+                formated_app_name,
+                formated_app_name,
+                cmd,
+                icon_path,
+            ))
 
 def remove(app):
     app_dir = os.path.join(HOME_DIR, app)
@@ -260,21 +259,37 @@ def focus_app(app):
 def run(app):
     app_dir = os.path.join(HOME_DIR, app)
     app_conf_path = os.path.join(CONF_DIR, app + '.json')
+    app_default_conf_path = os.path.join(
+        APPS_DIR, app.split('#')[0], 'settings.json')
     fonts_dir = os.path.join(USER_HOME_DIR, '.fonts')
     themes_dir = os.path.join(USER_HOME_DIR, '.themes')
     cmd = []
     docker_args = []
     volume_args = []
+    env_args = []
 
     with open(app_conf_path, 'r') as app_conf_file:
         app_conf_data = json.loads(app_conf_file.read())
 
-    privileged = app_conf_data.get('privileged')
-    host_x11 = app_conf_data.get('host_x11')
-    increase_shm = app_conf_data.get('increase_shm', INCREASE_SHM)
-    dpi = app_conf_data.get('dpi', DPI)
+    with open(app_default_conf_path, 'r') as app_default_conf_file:
+        app_default_conf_data = json.loads(app_default_conf_file.read())
 
-    if DEBUG:
+    mount_path = app_conf_data.get('mount_path',
+        app_default_conf_data.get('mount_path', '/home/docker/Docker'))
+    privileged = app_conf_data.get('privileged',
+        app_default_conf_data.get('privileged'))
+    host_x11 = app_conf_data.get('host_x11',
+        app_default_conf_data.get('host_x11'))
+    headless = app_conf_data.get('headless',
+        app_default_conf_data.get('headless'))
+    cli = app_conf_data.get('cli',
+        app_default_conf_data.get('cli'))
+    increase_shm = app_conf_data.get('increase_shm',
+        app_default_conf_data.get('increase_shm', INCREASE_SHM))
+    dpi = app_conf_data.get('dpi',
+        app_default_conf_data.get('increase_shm', DPI))
+
+    if DEBUG or cli:
         docker_args.append('-it')
         cmd.append('/bin/bash')
 
@@ -332,7 +347,7 @@ def run(app):
         # Get the cookie for the host display
         x_cookie = subprocess.check_output(['xauth', 'list', ':0']).split()[-1]
         x_num = '0'
-    else:
+    elif not headless:
         # Create a cookie for the new Xephyr window
         x_cookie = subprocess.check_output(['mcookie'])
         x_num = str(random.randint(1000, 32000))
@@ -361,7 +376,22 @@ def run(app):
             x_cookie,
         ])
 
-    x_screen_path = os.path.join(TMP_DIR, '.X11-unix', 'X' + x_num)
+    if not headless:
+        x_screen_path = os.path.join(TMP_DIR, '.X11-unix', 'X' + x_num)
+
+        volume_args += [
+            '-v', '%s:%s:ro' % (x_screen_path, x_screen_path),
+            '-v', '%s:%s:ro' % (PULSE_COOKIE_PATH, '/tmp/.pulse-cookie'),
+            '-v', '/var/run/user/%s/pulse/native:/var/run/pulse/native' % (
+                os.getuid()),
+        ]
+
+        env_args += [
+            '-e', 'DISPLAY=:' + x_num,
+            '-e', 'XAUTHORITY=/tmp/.Xauth',
+            '-e', 'XCOOKIE=' + x_cookie,
+            '-e', 'PULSE_SERVER=' + PULSE_SERVER,
+        ]
 
     x_proc = None
     docker_id = None
@@ -405,7 +435,7 @@ def run(app):
             except:
                 pass
 
-    if not host_x11:
+    if not host_x11 and not headless:
         args = [
             'Xephyr',
             '-auth', x_auth_path,
@@ -445,42 +475,36 @@ def run(app):
                     time.sleep(0.5)
                     unload_pulseaudio(x_num)
 
-        thread = threading.Thread(target=pacmd_thread_func)
-        thread.daemon = True
-        thread.start()
+        if not headless:
+            thread = threading.Thread(target=pacmd_thread_func)
+            thread.daemon = True
+            thread.start()
 
     args = (['sudo'] if SUDO_DOCKER else []) + [
         'docker',
         'run',
         '-i',
-        '--rm' if DEBUG else '--detach',
+        '--rm' if (DEBUG or cli) else '--detach',
     ] + docker_args + [
         '-v', '%s:%s:ro' % (LOCALTIME_PATH, LOCALTIME_PATH),
-        '-v', '%s:%s:ro' % (x_screen_path, x_screen_path),
-        '-v', '%s:%s:ro' % (PULSE_COOKIE_PATH, '/tmp/.pulse-cookie'),
         '-v', '%s:%s:ro' % (BASE_CONF_PATH, '/base.json'),
         '-v', '%s:%s:ro' % (app_conf_path, '/app.json'),
-        '-v', '%s:%s' % (app_dir, '/home/docker/Docker'),
-        '-v', '/var/run/user/%s/pulse/native:/var/run/pulse/native' % (
-            os.getuid()),
+        '-v', '%s:%s' % (app_dir, mount_path),
     ] + volume_args + [
         '-u', 'docker',
         '-e', 'HOME=/home/docker',
-        '-e', 'DISPLAY=:' + x_num,
-        '-e', 'XAUTHORITY=/tmp/.Xauth',
-        '-e', 'XCOOKIE=' + x_cookie,
-        '-e', 'PULSE_SERVER=' + PULSE_SERVER,
+    ] + env_args + [
         'dockercask/' + app.split('#')[0],
     ] + cmd
 
     print ' '.join(args)
 
-    if not host_x11 and SHARE_CLIPBOARD:
+    if not host_x11 and not headless and SHARE_CLIPBOARD:
         thread = threading.Thread(target=share_clipboard, args=(x_num,))
         thread.daemon = True
         thread.start()
 
-    if DEBUG:
+    if DEBUG or cli:
         try:
             subprocess.check_call(args)
         finally:

@@ -1,0 +1,5 @@
+{
+    "mount_path": "/home/docker/.config/google-chrome",
+    "host_x11": true,
+    "privileged": true
+}

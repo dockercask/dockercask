@@ -215,7 +215,7 @@ def add(app):
     formated_app_name = app.replace('#', ' ').replace('-', ' ').split()
     formated_app_name = ' '.join([x.capitalize() for x in formated_app_name])
 
-    if not os.path.exists(icon_path):
+    if os.path.exists(icon_path):
         with open(desktop_entry_path, 'w') as desktop_file:
             desktop_file.write(DESKTOP_ENTRY % (
                 formated_app_name,

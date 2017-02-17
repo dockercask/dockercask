@@ -12,6 +12,9 @@ RUN pacman -S --noconfirm wget git unzip jq nano
 ADD aurget.sh /usr/local/bin/aurget
 RUN chmod +x /usr/local/bin/aurget
 
+ADD aurmake.sh /usr/local/bin/aurmake
+RUN chmod +x /usr/local/bin/aurmake
+
 ADD appinit.sh /usr/local/bin/appinit
 RUN chmod +x /usr/local/bin/appinit
 

@@ -275,8 +275,8 @@ def run(app):
 
     mount_path = app_conf_data.get('mount_path',
         app_default_conf_data.get('mount_path', '/home/docker/Docker'))
-    privileged = app_conf_data.get('privileged',
-        app_default_conf_data.get('privileged'))
+    admin = app_conf_data.get('admin',
+        app_default_conf_data.get('admin'))
     host_x11 = app_conf_data.get('host_x11',
         app_default_conf_data.get('host_x11'))
     headless = app_conf_data.get('headless',
@@ -292,8 +292,8 @@ def run(app):
         docker_args.append('-it')
         cmd.append('/bin/bash')
 
-    if privileged:
-        docker_args += ['--privileged']
+    if admin:
+        docker_args += ['--cap-add', 'SYS_ADMIN']
 
     if host_x11:
         volume_args += ['-v', '/etc/machine-id:/etc/machine-id:ro']
